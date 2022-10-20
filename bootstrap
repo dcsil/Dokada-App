@@ -1,7 +1,6 @@
 #!/bin/bash
 #this script sets up the dev environment for our app
 
-sudo apt update
 sudo apt install curl
 cd ~
 curl -sL https://deb.nodesource.com/setup_14.x -o setup_14.sh
@@ -20,3 +19,6 @@ npm install --global yarn
 
 sudo apt-get update
 sudo apt-get install python3 python3-pip
+pip3 install -r requirements.txt
+
+sudo apt update
