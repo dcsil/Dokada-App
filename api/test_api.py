@@ -1,9 +1,9 @@
 import pytest
-from api import create_app
+from api import get_app
 
 def test_home_page_post():
 
-    get_app = create_app()
+    flask_app = get_app()
 
     # Create a test client using the Flask application configured for testing
     with flask_app.test_client() as test_client:
