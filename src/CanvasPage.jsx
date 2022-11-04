@@ -2,6 +2,8 @@ import './styles/CanvasPage.css';
 import React from 'react';
 import Canvas from './Canvas'
 
+import jacket from './images/denim_jacket.png'
+
 function CanvasPage() {
   // If anyone fetches data here please use a react hook for componentDidMount.
   return (
@@ -11,7 +13,8 @@ function CanvasPage() {
           Canvas Page goes here
         </p>
         <div>
-          <Canvas/>
+          {/*Hard code the image url for the canvas for now*/}
+          <Canvas imageUrl={jacket}/>
         </div>
       </header>
     </div>
