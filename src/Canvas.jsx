@@ -1,7 +1,8 @@
 import React from 'react';
-import { Stage, Layer, Line, Text } from 'react-konva';
+import { Stage, Layer, Line} from 'react-konva';
 
 const Canvas = (arg) => {
+
     const colors = [
         {id: 0, color: "eraser", colorCode: "#000000FF"},
         {id: 1, color: "red", colorCode: "#FF0000A0"},
@@ -14,6 +15,7 @@ const Canvas = (arg) => {
     const [strokeSize, setStrokeSize] = React.useState(30);
     const [lines, setLines] = React.useState([]);
     const isDrawing = React.useRef(false);
+    const canvasCtx = React.useRef();
     const [imageInfo, setImageInfo] = React.useState({
         width: window.innerWidth,
         height: window.innerHeight
@@ -52,6 +54,32 @@ const Canvas = (arg) => {
             height: img.naturalHeight
         })
     }
+
+    const saveCanvasCtx = () => {
+        const canvasWrapper = document.getElementsByClassName("konvajs-content")[0];
+        canvasCtx.ctx = canvasWrapper.children[0];
+    }
+
+    const saveImage = () => {
+        const ctx = canvasCtx.ctx.getContext("2d");
+        const imageData = ctx.getImageData(0, 0, imageInfo.width-1, imageInfo.height-1);
+        console.log(imageData);
+
+        /*
+            Image crunching algorithm here. We need to do downscaling here at the very least
+            We might also write the bounding box here to save computing time so we don't need
+            to group layers
+
+            We should outsource the logic to a function so that we can call it on layers instead
+            of just pixels
+        */
+    }
+
+    const onloadHandler = () => {
+        saveCanvasCtx();
+    }
+    
+    window.onload = onloadHandler;
 
     return (
         /*
@@ -117,6 +145,8 @@ const Canvas = (arg) => {
                     <option value="30" selected="selected">30</option>
                     <option value="45">45</option>
                 </select>
+
+                <input type="button" value="Save" onClick={saveImage}/>
             </div>
         </div>
     );
