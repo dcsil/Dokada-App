@@ -7,6 +7,8 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import CanvasPage from './CanvasPage';
 import HomePage from './HomePage';
 import Dasboard from './Dashboard';
+import Auth from "./components/Auth.jsx"
+
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -16,6 +18,7 @@ root.render(
           <Route index element={<HomePage/>} />
           <Route path="canvas" element={<CanvasPage/>} />
           <Route path="dashboard" element={<Dasboard/>} />
+          <Route path="login" element={<Auth/>} />
         </Route>
       </Routes>
     </BrowserRouter>

@@ -2,6 +2,7 @@ import './styles/HomePage.css';
 
 function HomePage() {
   return (
+
     <div style={{textAlign: "center"}}>
       <header style={{backgroundColor: "#82C3FF05", minHeight: "100vh"}}>
         <p>
