@@ -1,5 +1,6 @@
 from flask import Flask
-import db
+from flask_restful import Api, Resource, reqparse
+#import db
 
    
 app = Flask(__name__)
@@ -10,7 +11,7 @@ def greet():
 
 @app.route("/test")
 def test():
-    db.db.collection.insert_one({"name": "John"})
+    #db.db.collection.insert_one({"name": "John"})
     return "Connected to the data base!"
 
 def get_app():
