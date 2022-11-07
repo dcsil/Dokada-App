@@ -1,0 +1,17 @@
+tools:
+  exceptions: # Sentry link here
+  logging: # Datadog link here
+  ci: https://github.com/dcsil/Dokada-App/actions
+
+services:
+  production: https://dokada-app.herokuapp.com/
+  production_dashboard: https://dashboard.heroku.com/apps/dokada-app
+  staging: main
+
+# No docs yet
+docs:
+  getting_started: https://github.com/dcsil/Dokada-App
+  
+commands:
+  bootstrap: bootstrap
+  server: flask run
