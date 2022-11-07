@@ -1,6 +1,6 @@
 tools:
-  exceptions: # Sentry link here
-  logging: # Datadog link here
+  exceptions:
+  logging:
   ci: https://github.com/dcsil/Dokada-App/actions
 
 services:
@@ -13,5 +13,6 @@ docs:
   getting_started: https://github.com/dcsil/Dokada-App
   
 commands:
+  database:
   bootstrap: bootstrap
   server: flask run
