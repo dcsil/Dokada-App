@@ -13,7 +13,10 @@ docs:
   getting_started: https://github.com/dcsil/Dokada-App
   
 commands:
-  database: bootstrap
-  bootstrap: bootstrap
+  database: 
+    start: sudo systemctl start mongod
+    verify: sudo systemctl status mongod
+    stop: sudo systemctl stop mongod
+  bootstrap: ./bootstrap
   server: flask run
   test: npm test
