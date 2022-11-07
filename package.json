@@ -3,8 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "engines": {
-    "node": "v18.9.1",
-    "npm":"8.19.1"
+    "node": ">v18.9.1",
+    "npm":">8.19.1"
   },
   "dependencies": {
     "@babel/plugin-syntax-flow": "^7.18.6",
