@@ -13,7 +13,7 @@ docs:
   getting_started: https://github.com/dcsil/Dokada-App
   
 commands:
-  database: bootstrap
-  bootstrap: bootstrap
+  database: ./bootstrap
+  bootstrap: ./bootstrap
   server: flask run
   test: npm test
