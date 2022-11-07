@@ -1,0 +1,22 @@
+tools:
+  exceptions: https://github.com/dcsil/Dokada-App/actions
+  logging: https://github.com/dcsil/Dokada-App/actions
+  ci: https://github.com/dcsil/Dokada-App/actions
+
+services:
+  production: https://dokada-app.herokuapp.com/
+  production_dashboard: https://dashboard.heroku.com/apps/dokada-app
+  staging: main
+
+# No docs yet
+docs:
+  getting_started: https://github.com/dcsil/Dokada-App
+  
+commands:
+  database: 
+    start: sudo systemctl start mongod
+    verify: sudo systemctl status mongod
+    stop: sudo systemctl stop mongod
+  bootstrap: ./bootstrap
+  server: flask run
+  test: npm test

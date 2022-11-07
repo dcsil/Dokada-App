@@ -2,26 +2,15 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './styles/index.css';
 import App from './App';
+import { HashRouter } from 'react-router-dom';
 import reportWebVitals from './reportWebVitals';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-// import CanvasPage from './CanvasPage';
-import HomePage from './HomePage';
-import Dasboard from './Dashboard';
-import Auth from "./components/Auth.jsx"
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<App/>}>
-          <Route index element={<HomePage/>} />
-          {/* <Route path="canvas" element={<CanvasPage/>} /> */}
-          <Route path="dashboard" element={<Dasboard/>} />
-          <Route path="login" element={<Auth/>} />
-        </Route>
-      </Routes>
-    </BrowserRouter>
+  <HashRouter>
+    <App/>
+  </HashRouter>
 );
 
 // If you want to start measuring performance in your app, pass a function

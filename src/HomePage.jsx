@@ -1,4 +1,5 @@
 import './styles/HomePage.css';
+import { Link } from 'react-router-dom';
 
 function HomePage() {
   return (
@@ -10,15 +11,15 @@ function HomePage() {
         </p>
 
         {/*Temporary, used to work on pages individually for now*/}
-        <a href="/canvas">
+        <Link to="/canvas">
           Canvas
-        </a>
+        </Link>
         
         <br/>
 
-        <a href="/dashboard">
+        <Link href="/dashboard">
           Dashboard
-        </a>
+        </Link>
       </header>
     </div>
   );
