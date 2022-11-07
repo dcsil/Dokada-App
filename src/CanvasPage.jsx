@@ -1,6 +1,6 @@
 import './styles/CanvasPage.css';
 import React from 'react';
-import Canvas from './Canvas'
+// import Canvas from './Canvas'
 
 import jacket from './images/denim_jacket.png'
 
@@ -14,7 +14,7 @@ function CanvasPage() {
         </p>
         <div>
           {/*Hard code the image url for the canvas for now*/}
-          <Canvas imageUrl={jacket}/>
+          {/* <Canvas imageUrl={jacket}/> */}
         </div>
       </header>
     </div>
