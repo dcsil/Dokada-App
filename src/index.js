@@ -4,7 +4,7 @@ import './styles/index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import CanvasPage from './CanvasPage';
+// import CanvasPage from './CanvasPage';
 import HomePage from './HomePage';
 import Dasboard from './Dashboard';
 import Auth from "./components/Auth.jsx"
@@ -16,7 +16,7 @@ root.render(
       <Routes>
         <Route path="/" element={<App/>}>
           <Route index element={<HomePage/>} />
-          <Route path="canvas" element={<CanvasPage/>} />
+          {/* <Route path="canvas" element={<CanvasPage/>} /> */}
           <Route path="dashboard" element={<Dasboard/>} />
           <Route path="login" element={<Auth/>} />
         </Route>
