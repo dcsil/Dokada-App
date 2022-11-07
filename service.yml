@@ -1,6 +1,6 @@
 tools:
   exceptions: https://github.com/dcsil/Dokada-App/actions
-  logging: https://github.com/dcsil/Dokada-App/actions
+  logging: https://app.datadoghq.com/logs
   ci: https://github.com/dcsil/Dokada-App/actions
 
 services:
