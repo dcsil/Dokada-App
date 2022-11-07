@@ -1,6 +1,6 @@
 tools:
-  exceptions: ~
-  logging: ~
+  exceptions: https://github.com/dcsil/Dokada-App/actions
+  logging: https://github.com/dcsil/Dokada-App/actions
   ci: https://github.com/dcsil/Dokada-App/actions
 
 services:
@@ -13,6 +13,7 @@ docs:
   getting_started: https://github.com/dcsil/Dokada-App
   
 commands:
-  database: ~
+  database: bootstrap
   bootstrap: bootstrap
   server: flask run
+  test: npm test
