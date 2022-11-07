@@ -61,9 +61,9 @@ const Canvas = (arg) => {
     }
 
     const saveImage = () => {
-        const ctx = canvasCtx.ctx.getContext("2d");
-        const imageData = ctx.getImageData(0, 0, imageInfo.width-1, imageInfo.height-1);
-        console.log(imageData);
+        // const ctx = canvasCtx.ctx.getContext("2d");
+        // const imageData = ctx.getImageData(0, 0, imageInfo.width-1, imageInfo.height-1);
+        // console.log(imageData);
 
         /*
             Image crunching algorithm here. We need to do downscaling here at the very least
