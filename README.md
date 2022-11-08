@@ -1,7 +1,7 @@
 # Getting Started with Dokada
 
 ## Setup
-### Linux ubuntu
+### Debian based Linux systems
 Run the bootstrap script provided in the root directory, the set up will be done automatically
 
 ### Other Operating Systems
