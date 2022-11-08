@@ -1,5 +1,5 @@
 tools:
-  exceptions: https://github.com/dcsil/Dokada-App/actions
+  exceptions: https://sentry.io/organizations/dokada-app/projects/dokada-app/?project=4504119699636224&statsPeriod=14d
   logging: https://app.datadoghq.com/logs
   ci: https://github.com/dcsil/Dokada-App/actions
 
