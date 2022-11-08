@@ -11,3 +11,4 @@ Werkzeug==2.2.2
 pymongo[srv]
 Flask-PyMongo
 gunicorn
+sentry-sdk[flask]
