@@ -128,7 +128,7 @@ const Canvas = (arg) => {
                     setTool(e.target.value);
                     }}
                 >
-                    <option value="1" selected="selected">red</option>
+                    <option value="1">red</option>
                     <option value="2">green</option>
                     <option value="3">blue</option>
                     <option value="4">pink</option>
@@ -142,7 +142,7 @@ const Canvas = (arg) => {
                     }}
                 >
                     <option value="15">15</option>
-                    <option value="30" selected="selected">30</option>
+                    <option value="30">30</option>
                     <option value="45">45</option>
                 </select>
 
