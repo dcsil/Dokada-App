@@ -1,7 +1,7 @@
 # Getting Started with Dokada
 
 ## Setup
-### Debian based Linux systems
+### Debian based Linux systems (Ubuntu/Pop!_OS/etc.)
 Run the bootstrap script provided in the root directory, the set up will be done automatically
 
 ### Other Operating Systems
@@ -11,12 +11,12 @@ Run the bootstrap script provided in the root directory, the set up will be done
 4. Install a [MongoDB client](https://www.mongodb.com/docs/manual/installation/) that is compatible with your system
 
 ## Run
-Execute "npm build" in root to build the frontend
+Execute "npm build" in root to build the frontend\
 Execute "flask run" in the root directory, the server will be hosted locally
 
 ## Testing and CI
-The testing are divided into backend and front end currently, they can both be run in the root directory
-To run front end tests: npm test
+The testing are divided into backend and front end currently, they can both be run in the root directory\
+To run front end tests: npm test\
 To run back end tests: pytest
 
 The CI is set up in github actions and contain tests for both part. Jest-test.yml tests the front end and api-functional-test.yml
