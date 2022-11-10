@@ -60,19 +60,69 @@ const Canvas = (arg) => {
         canvasCtx.ctx = canvasWrapper.children[0];
     }
 
+    const downscaleAndBBox = (imageData, dsFactor) => {
+        const dsWidth = Math.floor(imageData.width / dsFactor);
+        const dsHeight = Math.floor(imageData.height / dsFactor);
+        const pixelThreshold = Math.ceil(dsFactor*dsFactor/2);
+        const dsImageData = {
+            // Image buffer, size is width*height
+            image: [],
+
+            // Image dimensions
+            width: dsWidth,
+            height: dsHeight,
+
+            // Bounding box covering the highlighted sections, represented by top-left and bottom-right corners
+            bbox: {
+                xMin: dsImageData.width, 
+                yMin: dsImageData.height,
+                xMax: -1,  
+                yMax: -1
+            }
+        }
+
+        for (let h = 0; h < dsHeight; h++) {
+            for (let w = 0; w < dsWidth; w++) {
+                let pixelCount = 0;
+                let hMult = 4*imageData.width;
+                let wMult = 4;
+
+                // Check alpha in equivalent 2x2 block in original image
+                if (imageData.data[((h)*hMult + (w)*wMult) + 3] > 0) pixelCount++; 
+                if (imageData.data[((h)*hMult + (w+1)*wMult) + 3] > 0) pixelCount++; 
+                if (imageData.data[((h+1)*hMult + (w)*wMult) + 3] > 0) pixelCount++; 
+                if (imageData.data[((h+1)*hMult + (w+1)*wMult) + 3] > 0) pixelCount++; 
+
+                // Decide if there are enough pixels in the original image to set this pixel
+                // Threshold is set to fill in pixels where pixelCount >= dsFactor^2/2
+                if (pixelCount >= pixelThreshold){
+                    dsImageData.image.push(1);
+                    if (w < dsImageData.bbox.xMin) dsImageData.bbox.xMin = w;
+                    if (h < dsImageData.bbox.yMin) dsImageData.bbox.xMin = h;
+                    if (w > dsImageData.bbox.xMax) dsImageData.bbox.xMin = w;
+                    if (h > dsImageData.bbox.yMax) dsImageData.bbox.xMin = h;
+                }
+                else dsImageData.image.push(0);
+                
+            }
+        }
+
+        return dsImageData;
+    }
+
     const saveImage = () => {
-        // const ctx = canvasCtx.ctx.getContext("2d");
-        // const imageData = ctx.getImageData(0, 0, imageInfo.width-1, imageInfo.height-1);
-        // console.log(imageData);
+        const ctx = canvasCtx.ctx.getContext("2d");
 
-        /*
-            Image crunching algorithm here. We need to do downscaling here at the very least
-            We might also write the bounding box here to save computing time so we don't need
-            to group layers
+        // Retrieve the ImageData data structure
+        // https://developer.mozilla.org/en-US/docs/Web/API/ImageData
+        const imageData = ctx.getImageData(0, 0, imageInfo.width-1, imageInfo.height-1);
+        console.log(imageData);
 
-            We should outsource the logic to a function so that we can call it on layers instead
-            of just pixels
-        */
+        // Set Downscale factor and give the work to a downscaling function
+        // Naive bounding box function, pick min/max x and min/max ys to just save some computing space
+        const dsFactor = 2;
+        const dsImageData = downscaleAndBBox(imageData, dsFactor);
+        console.log(dsImageData);
     }
 
     const onloadHandler = () => {
