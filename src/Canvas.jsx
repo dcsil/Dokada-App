@@ -11,10 +11,10 @@ const Canvas = (arg) => {
         {id: 3, color: "pink", colorCode: "#FF00FFA0"},
         {id: 4, color: "eraser", colorCode: "#000000FF"},
     ]
+    const layerCount = colors.length - 1;
 
     const [layerID, setTool] = React.useState(0);
     const [strokeSize, setStrokeSize] = React.useState(30);
-    const [lines, setLines] = React.useState([]);
     const isDrawing = React.useRef(false);
     const canvasCtx = React.useRef({});
     const [imageInfo, setImageInfo] = React.useState({
@@ -31,7 +31,7 @@ const Canvas = (arg) => {
                 lines: [],
 
                 // Imagedata
-                imageData: [],
+                imageData: {},
 
                 // -1 to 1, default is 0 which means no opinion
                 weights: {
@@ -66,7 +66,7 @@ const Canvas = (arg) => {
 
         // replace last
         updatedLayer[layerID].lines.splice(updatedLayer[layerID].lines.length - 1, 1, lastLine);
-        setLines(updatedLayer[layerID].lines.concat());
+        updateLayer(updatedLayer);
     };
 
     const handleMouseUp = () => {
@@ -105,7 +105,7 @@ const Canvas = (arg) => {
     const saveCanvasCtx = () => {
         // Can't grab canvas until after it loads
         const canvasWrapper = document.getElementsByClassName("konvajs-content")[0];
-        canvasCtx.current.ctx = canvasWrapper.children[0];
+        canvasCtx.current.ctxList = canvasWrapper.children;
     }
 
     const downscaleAndBBox = (imageData, dsFactor) => {
@@ -146,12 +146,21 @@ const Canvas = (arg) => {
                 if (pixelCount >= pixelThreshold){
                     dsImageData.image.push(1);
                     if (w < dsImageData.bbox.xMin) dsImageData.bbox.xMin = w;
-                    if (h < dsImageData.bbox.yMin) dsImageData.bbox.xMin = h;
-                    if (w > dsImageData.bbox.xMax) dsImageData.bbox.xMin = w;
-                    if (h > dsImageData.bbox.yMax) dsImageData.bbox.xMin = h;
+                    if (h < dsImageData.bbox.yMin) dsImageData.bbox.yMin = h;
+                    if (w > dsImageData.bbox.xMax) dsImageData.bbox.xMax = w;
+                    if (h > dsImageData.bbox.yMax) dsImageData.bbox.yMax = h;
                 }
                 else dsImageData.image.push(0);
                 
+            }
+        }
+
+        if (dsImageData.bbox.xMin === dsWidth && dsImageData.bbox.yMin === dsHeight && dsImageData.bbox.xMax === -1 && dsImageData.bbox.yMax === -1) {
+            dsImageData.bbox = {
+                xMin: 0, 
+                yMin: 0,
+                xMax: 0,  
+                yMax: 0
             }
         }
 
@@ -159,27 +168,35 @@ const Canvas = (arg) => {
     }
 
     const saveImage = () => {
-        const ctx = canvasCtx.current.ctx.getContext("2d");
+        let updatedLayers = [...layerData];
+        for (let i = 0; i < layerCount; i++) {
+            const ctx = canvasCtx.current.ctxList[i].getContext("2d");
 
-        // Retrieve the ImageData data structure
-        // https://developer.mozilla.org/en-US/docs/Web/API/ImageData
-        const imageData = ctx.getImageData(0, 0, imageInfo.width-1, imageInfo.height-1);
-        //console.log(imageData);
+            // Retrieve the ImageData data structure
+            // https://developer.mozilla.org/en-US/docs/Web/API/ImageData
+            const imageData = ctx.getImageData(0, 0, imageInfo.width-1, imageInfo.height-1);
+    
+            // Set Downscale factor and give the work to a downscaling function
+            // Naive bounding box function, pick min/max x and min/max ys to just save some computing space
+            const dsFactor = 2;
+            const dsImageData = downscaleAndBBox(imageData, dsFactor);
+            
+            updatedLayers[i].imageData = dsImageData;
+        }
 
-        // Set Downscale factor and give the work to a downscaling function
-        // Naive bounding box function, pick min/max x and min/max ys to just save some computing space
-        const dsFactor = 2;
-        const dsImageData = downscaleAndBBox(imageData, dsFactor);
-        //console.log(dsImageData);
+        updateLayer(updatedLayers);
+
+
+        // Send the data to database here
     }
 
     // We render each color/layer separately so we can retrieve individual ImageData objects
     const layerRender = () => {
         const layerContent = [];
 
-        for (let layer = 0; layer < 4; layer++) {
+        for (let layer = 0; layer < layerCount; layer++) {
             layerContent.push(
-                <Layer>   
+                <Layer key={layer}>   
                 {
                 layerData[layer].lines.map((line, i) => (
                     <Line
@@ -199,7 +216,6 @@ const Canvas = (arg) => {
             )
         }
 
-        console.log(layerContent)
         return (layerContent);
     }
 
@@ -258,7 +274,6 @@ const Canvas = (arg) => {
                 <div style={{margin:'auto', width:'10%'}}>
                     <Slider aria-label="Quality" size="small"
                         value={layerData[layerID].weights.quality} onChange={(e) => {
-                            console.log(lines);
                             updateLayerWeight(e.target.value, 0);
                     }} />
                     <Slider aria-label="Style" size="small"
