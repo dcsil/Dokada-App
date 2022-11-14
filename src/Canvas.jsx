@@ -136,10 +136,11 @@ const Canvas = (arg) => {
                 let wMult = 4;
 
                 // Check alpha in equivalent 2x2 block in original image
-                if (imageData.data[((h)*hMult + (w)*wMult) + 3] > 0) pixelCount++; 
-                if (imageData.data[((h)*hMult + (w+1)*wMult) + 3] > 0) pixelCount++; 
-                if (imageData.data[((h+1)*hMult + (w)*wMult) + 3] > 0) pixelCount++; 
-                if (imageData.data[((h+1)*hMult + (w+1)*wMult) + 3] > 0) pixelCount++; 
+                for (let i = 0; i < dsFactor; i++) {
+                    for (let j = 0; j < dsFactor; j++) {
+                        if (imageData.data[((h + i)*hMult + (w + j)*wMult) + 3] > 0) pixelCount++; 
+                    }
+                }
 
                 // Decide if there are enough pixels in the original image to set this pixel
                 // Threshold is set to fill in pixels where pixelCount >= dsFactor^2/2
@@ -178,14 +179,13 @@ const Canvas = (arg) => {
     
             // Set Downscale factor and give the work to a downscaling function
             // Naive bounding box function, pick min/max x and min/max ys to just save some computing space
-            const dsFactor = 2;
+            const dsFactor = 4;
             const dsImageData = downscaleAndBBox(imageData, dsFactor);
             
             updatedLayers[i].imageData = dsImageData;
         }
 
         updateLayer(updatedLayers);
-
 
         // Send the data to database here
     }
@@ -219,13 +219,11 @@ const Canvas = (arg) => {
         return (layerContent);
     }
 
-    const onloadHandler = () => {
-        // Do all onload stuff here
-        console.log('Onload handler started')
+    // ComponentDidMount equivalent
+    React.useEffect(() => {
+        console.log('Canvas component mounted')
         saveCanvasCtx();
-    }
-    
-    window.onload = onloadHandler;
+      }, []);
 
     return (
         /*
