@@ -3,7 +3,6 @@ import { Stage, Layer, Line} from 'react-konva';
 import Slider from '@mui/material/Slider';
 
 const Canvas = (arg) => {
-
     const colors = [
         {id: 0, color: "red", colorCode: "#FF0000A0"},
         {id: 1, color: "green", colorCode: "#00FF00A0"},
@@ -33,11 +32,11 @@ const Canvas = (arg) => {
                 // Imagedata
                 imageData: {},
 
-                // -1 to 1, default is 0 which means no opinion
+                // 0 to 100, default is 50 which means no opinion
                 weights: {
-                    quality:0,
-                    style:0,
-                    fit:0,
+                    quality:50,
+                    style:50,
+                    fit:50,
                     // Other weights
                 }
             }
@@ -129,16 +128,16 @@ const Canvas = (arg) => {
             }
         }
 
+        const hMult = 4*imageData.width;
+        const wMult = 4;
         for (let h = 0; h < dsHeight; h++) {
             for (let w = 0; w < dsWidth; w++) {
                 let pixelCount = 0;
-                let hMult = 4*imageData.width;
-                let wMult = 4;
 
-                // Check alpha in equivalent 2x2 block in original image
+                // Check alpha in equivalent DSxDS block in original image
                 for (let i = 0; i < dsFactor; i++) {
                     for (let j = 0; j < dsFactor; j++) {
-                        if (imageData.data[((h + i)*hMult + (w + j)*wMult) + 3] > 0) pixelCount++; 
+                        if (imageData.data[((h*dsFactor + i)*hMult + (w*dsFactor + j)*wMult) + 3] > 0) pixelCount++;
                     }
                 }
 
@@ -164,7 +163,7 @@ const Canvas = (arg) => {
                 yMax: 0
             }
         }
-
+        
         return dsImageData;
     }
 
@@ -188,6 +187,7 @@ const Canvas = (arg) => {
         updateLayer(updatedLayers);
 
         // Send the data to database here
+        console.log(updatedLayers);
     }
 
     // We render each color/layer separately so we can retrieve individual ImageData objects
@@ -196,7 +196,7 @@ const Canvas = (arg) => {
 
         for (let layer = 0; layer < layerCount; layer++) {
             layerContent.push(
-                <Layer key={layer}>   
+                <Layer key={layer}>
                 {
                 layerData[layer].lines.map((line, i) => (
                     <Line

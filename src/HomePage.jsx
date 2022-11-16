@@ -17,7 +17,7 @@ function HomePage() {
         
         <br/>
 
-        <Link href="/dashboard">
+        <Link to="/dashboard">
           Dashboard
         </Link>
       </header>
