@@ -1,4 +1,6 @@
 import './styles/Dashboard.css';
+import ProductHeatmap from './ProductHeatmap';
+import jacket from './images/denim_jacket.png'
 
 function Dashboard() {
   return (
@@ -7,6 +9,7 @@ function Dashboard() {
         <p>
             Dashboard goes here
         </p>
+        <ProductHeatmap imageUrl={jacket}/>
       </header>
     </div>
   );
