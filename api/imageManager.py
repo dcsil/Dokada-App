@@ -18,4 +18,9 @@ def store_reviews(data):
         if db.reviews.find_one({"review_id": review_id}) == None:
             db.reviews.insert_one(review)
 
+def get_review(data):    
+    review = db.reviews.find_one({"review_id": data["review_id"]})    
+    review.pop("_id")
+    return review
+
    
