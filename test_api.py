@@ -1,5 +1,5 @@
 import pytest
-from api import get_app
+from app import get_app
 
 def test_home_page_post():
 
@@ -7,6 +7,6 @@ def test_home_page_post():
 
     # Create a test client using the Flask application configured for testing
     with flask_app.test_client() as test_client:
-        response = test_client.get('/greeting')
+        response = test_client.get('/')
         assert response.status_code == 200
         

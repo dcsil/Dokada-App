@@ -3,6 +3,7 @@ from flask_restful import Api, Resource, reqparse
 from flask_cors import CORS #comment this on deployment
 import sentry_sdk
 from sentry_sdk.integrations.flask import FlaskIntegration
+from api.imageManager import store_image
 #from api.greet import greet
 sentry_sdk.init(
     dsn="https://7f5de5cc77444f6f893d648f9a16c7de@o4504119699636224.ingest.sentry.io/4504119699636224",
@@ -25,6 +26,7 @@ def not_found(e):
 
 @app.route('/')
 def index():
+    store_image()
     return send_from_directory(app.static_folder,'index.html')
 
 @app.route('/debug-sentry')
@@ -43,3 +45,5 @@ def serve_canvas(path):
 """
 
 #api.add_resource(greet, '/greeting')
+def get_app():
+    return app
