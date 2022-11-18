@@ -1,6 +1,8 @@
 import './styles/Dashboard.css';
 import ProductHeatmap from './ProductHeatmap';
 import jacket from './images/denim_jacket.png'
+import React from 'react';
+
 
 function Dashboard() {
   return (
