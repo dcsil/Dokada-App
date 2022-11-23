@@ -1,8 +1,10 @@
-from flask import Flask, send_from_directory
+import json
+from flask import Flask, send_from_directory, request, jsonify
 from flask_restful import Api, Resource, reqparse
 from flask_cors import CORS #comment this on deployment
 import sentry_sdk
 from sentry_sdk.integrations.flask import FlaskIntegration
+from api.imageManager import store_reviews, get_review
 
 #from api.greet import greet
 sentry_sdk.init(
@@ -31,6 +33,16 @@ def index():
 @app.route('/debug-sentry')
 def trigger_error():
     division_by_zero = 1 / 0
+
+@app.route('/image-api', methods = ['POST', 'GET'])
+def image_portal():
+    if request.method == 'POST':
+        #print(request.get_json())
+        store_reviews(request.get_json())
+        return("recieved")
+    elif request.method == 'GET':
+        #print(json.dumps(get_review(request.get_json())))
+        return json.dumps(get_review(request.get_json()))
 
 """
 @app.route("/", defaults={'path':''})
