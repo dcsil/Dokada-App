@@ -6,12 +6,7 @@ import 'bootstrap/dist/css/bootstrap.css';
 function App() {
   return (
     <div className="App">
-<<<<<<< HEAD
       <Menu/>
-=======
-      <Navbar/>
-      <p id="app-live">Hello World</p>
->>>>>>> main
       <Outlet/>
     </div>
   );
