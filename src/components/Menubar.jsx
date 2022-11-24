@@ -1,12 +1,13 @@
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
+import "../styles/Navbar.css";
+
 
 function Menu() {
   return (
     <>
-      <br />
-      <Navbar bg="dark" variant="dark">
+      <Navbar variant="warning" className="navItem">
         <Container>
           <Navbar.Brand href="/">Dokada</Navbar.Brand>
           <Nav className="me-auto">
@@ -14,7 +15,6 @@ function Menu() {
             <Nav.Link href="features">Features</Nav.Link>
             <Nav.Link href="pricing">Pricing</Nav.Link>
             <Nav.Link href="login">Login</Nav.Link>
-
           </Nav>
         </Container>
       </Navbar>
