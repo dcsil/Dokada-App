@@ -4,7 +4,7 @@ from flask_restful import Api, Resource, reqparse
 from flask_cors import CORS #comment this on deployment
 import sentry_sdk
 from sentry_sdk.integrations.flask import FlaskIntegration
-from api.imageManager import store_reviews, get_review
+from api.imageManager import store_reviews, get_product_review
 
 #from api.greet import greet
 sentry_sdk.init(
@@ -36,13 +36,11 @@ def trigger_error():
 
 @app.route('/image-api', methods = ['POST', 'GET'])
 def image_portal():
-    if request.method == 'POST':
-        #print(request.get_json())
+    if request.method == 'POST':        
         store_reviews(request.get_json())
         return("recieved")
-    elif request.method == 'GET':
-        #print(json.dumps(get_review(request.get_json())))
-        return json.dumps(get_review(request.get_json()))
+    elif request.method == 'GET':        
+        return json.dumps(get_product_review(request.get_json()))
 
 """
 @app.route("/", defaults={'path':''})
