@@ -1,7 +1,6 @@
 
 #Mutate aggregates in product_data with the review data
-def aggregate_review(review, product_data):
-    print(product_data)
+def aggregate_review(review, product_data):    
     #product_data = db.aggregates.find_one({"product_id": review["product_id"]})
     product_images = product_data["images"]
     downscaled_dimensions = {"width": product_data["imageDimensions"]["width"]//product_data["downscale_factor"], "height": product_data["imageDimensions"]["height"]//product_data["downscale_factor"]}
@@ -19,8 +18,7 @@ def aggregate_review(review, product_data):
     
 
 #Mutates the aggregate array to add the image array * img_weight in each entry only for the specified range in bbox
-def aggregate_image(aggr_array, dimensions, image_array, img_weight, bbox):
-    print (aggr_array)
+def aggregate_image(aggr_array, dimensions, image_array, img_weight, bbox):    
     for x_coord in range(bbox["xMin"], bbox["xMax"]+1):
         for y_coord in range(bbox["yMin"], bbox["yMax"]+1):
             img_x_coord = x_coord - bbox["xMin"]
@@ -28,5 +26,5 @@ def aggregate_image(aggr_array, dimensions, image_array, img_weight, bbox):
             image_width = bbox["xMax"] - bbox["xMin"] + 1           
             image_index = img_y_coord*image_width + img_x_coord
             aggregate_index = y_coord * dimensions["width"] + x_coord
-            print(f'x: {x_coord}, y: {y_coord}, index: {aggregate_index}, imgX: {img_x_coord}, imgY: {img_y_coord}, imgIndex: {image_index}')
+            #print(f'x: {x_coord}, y: {y_coord}, index: {aggregate_index}, imgX: {img_x_coord}, imgY: {img_y_coord}, imgIndex: {image_index}')
             aggr_array[aggregate_index] += img_weight*image_array[image_index]

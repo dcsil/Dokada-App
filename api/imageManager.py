@@ -34,8 +34,7 @@ def store_reviews(data):
         db.products.replace_one({"product_id": product["product_id"]}, product)
 
 def get_product_review(data):   
-    review_lst = []
-    print(data) 
+    review_lst = []     
     reviews = db.reviews.find({"product_id": data["product_id"]})    
     for review in reviews:
         review.pop("_id")
