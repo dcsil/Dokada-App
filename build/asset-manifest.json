@@ -1,16 +1,16 @@
 {
   "files": {
-    "main.css": "/static/css/main.aaa3a862.css",
-    "main.js": "/static/js/main.eccd566d.js",
+    "main.css": "/static/css/main.81de0734.css",
+    "main.js": "/static/js/main.d09e480d.js",
     "static/js/787.19965a43.chunk.js": "/static/js/787.19965a43.chunk.js",
     "static/media/denim_jacket.png": "/static/media/denim_jacket.ac7ee27cc4be1b632362.png",
     "index.html": "/index.html",
-    "main.aaa3a862.css.map": "/static/css/main.aaa3a862.css.map",
-    "main.eccd566d.js.map": "/static/js/main.eccd566d.js.map",
+    "main.81de0734.css.map": "/static/css/main.81de0734.css.map",
+    "main.d09e480d.js.map": "/static/js/main.d09e480d.js.map",
     "787.19965a43.chunk.js.map": "/static/js/787.19965a43.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.aaa3a862.css",
-    "static/js/main.eccd566d.js"
+    "static/css/main.81de0734.css",
+    "static/js/main.d09e480d.js"
   ]
 }
