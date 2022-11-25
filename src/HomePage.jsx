@@ -6,33 +6,45 @@ function HomePage() {
   return (
     <div style={{ textAlign: "center" }}>
       {/* <header style={{ backgroundColor: "#82C3FF05", minHeight: "100vh" }}> */}
-        {/* <p>HomePage goes here!!!</p> */}
+      {/* <p>HomePage goes here!!!</p> */}
 
-        {/*Temporary, used to work on pages individually for now*/}
-        <Button
-          href="#/canvas"
-          variant="contained"
-          size="large"
-          color="secondary"
-          style={{ width:200 }}
-        >
-          Canvas
-        </Button>
-        {/* <Link to="/canvas">Canvas</Link> */}
+      {/*Temporary, used to work on pages individually for now*/}
+      <Button
+        href="#/canvas"
+        variant="contained"
+        size="large"
+        color="secondary"
+        style={{ width: 200 }}
+        className="gradient-custom-2"
+      >
+        Canvas
+      </Button>
+      <br />
+      <br />
+      <Button
+        href="#/dashboard"
+        variant="contained"
+        size="large"
+        color="secondary"
+        style={{ width: 200 }}
+        className="gradient-custom-2"
+      >
+        Dashboard
+      </Button>
+      <br />
+      <br />
 
-        <br />
-        <br />
-
-        <Button
-          href="#/dashboard"
-          variant="contained"
-          size="large"
-          color="secondary"
-          style={{ width: 200 }}
-        >
-          Dashboard
-        </Button>
-        {/* <Link to="/dashboard">Dashboard</Link> */}
+      <Button
+        href="#/login"
+        variant="contained"
+        size="large"
+        color="secondary"
+        style={{ width: 200 }}
+        className="gradient-custom-2"
+      >
+        Login
+      </Button>
+      {/* <Link to="/dashboard">Dashboard</Link> */}
       {/* </header> */}
     </div>
   );
