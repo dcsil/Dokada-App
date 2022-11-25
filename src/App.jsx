@@ -18,7 +18,6 @@ function App() {
   return (
     <div className="App">
       <Menu />
-      <p id="app-live">Hello World</p>
       <Routes>
         <Route path="/canvas" element={<CanvasPage />} />
         <Route path="/dashboard" element={<Dashboard />} />
