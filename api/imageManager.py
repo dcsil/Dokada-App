@@ -2,7 +2,7 @@ from .db import getClient
 db = getClient()
 def store_reviews(data):
     #data comes in as a dictionary containing parsed JSON, check documentations for the format of this request
-    
+
     print(data)
     product_info = data["product_info"]
     
@@ -21,6 +21,14 @@ def store_reviews(data):
 def get_review(data):    
     review = db.reviews.find_one({"review_id": data["review_id"]})    
     review.pop("_id")
+
+    product = db.products.find_one({"product_id": review["product_id"]})
+    review['dimensions'] = {
+        'width': product['imageDimensions']['width'],
+        'height': product['imageDimensions']['height'],
+        'downscale_factor': product['downscale_factor']
+    }
+
     return review
 
    
