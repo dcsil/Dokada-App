@@ -1,0 +1,21 @@
+{   
+    "review_id": 20,
+    "layers": [
+        {                    
+            "imageData": {
+                "image": [0, 1, 1, 0],                                                                            
+                "bbox": {
+                    "xMin": 0,
+                    "yMin": 0,
+                    "xMax": 1,
+                    "yMax": 1
+                }
+            },
+            "weights": {
+                "quality": 1,
+                "style": 0,
+                "fit": 0
+            }
+        }
+    ]
+}

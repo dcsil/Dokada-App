@@ -1,0 +1,23 @@
+{
+    "product_id": 2,
+    "imageDimensions": {
+        "width": 12,
+        "height": 12
+    },
+    "downscale_factor": 6,
+    "review_count": 0,
+    "images": {
+        "quality": {
+            "positive": [0, 0, 0, 0],
+            "negative": [0, 0, 0, 0]
+        },
+        "fit": {
+            "positive": [0, 0, 0, 0],
+            "negative": [0, 0, 0, 0]
+        },
+        "style": {
+            "positive": [0, 0, 0, 0],
+            "negative": [0, 0, 0, 0]
+        }
+    }
+}
