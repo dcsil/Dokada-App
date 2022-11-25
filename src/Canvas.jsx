@@ -167,8 +167,32 @@ const Canvas = (arg) => {
         return dsImageData;
     }
 
+    const sendToDatabase = (jsonData) => {
+        return fetch(
+            '/image-api', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                  },
+                body: JSON.stringify({
+                    'option': 'store-review',
+                    'content': jsonData
+                })
+            }
+        ).then((response) => response.json())
+        .then((data) => {
+          console.log('Success:', data);
+          return data;
+        })
+        .catch((error) => {
+          console.error('Error:', error);
+          return error;
+        });
+    };
+
     const saveImage = () => {
         let updatedLayers = [...layerData];
+        const dsFactor = 4;
         for (let i = 0; i < layerCount; i++) {
             const ctx = canvasCtx.current.ctxList[i].getContext("2d");
 
@@ -178,16 +202,42 @@ const Canvas = (arg) => {
     
             // Set Downscale factor and give the work to a downscaling function
             // Naive bounding box function, pick min/max x and min/max ys to just save some computing space
-            const dsFactor = 4;
             const dsImageData = downscaleAndBBox(imageData, dsFactor);
             
             updatedLayers[i].imageData = dsImageData;
         }
 
         updateLayer(updatedLayers);
+        //console.log(updatedLayers);
+
+        // Hardcode metadata for saveData for now, but we need to get this dynamically later
+        const saveData = {
+            "product_info": {
+                "product_id": 2,
+                "imageDimensions": {
+                    "width": Math.floor(imageInfo.width / dsFactor),
+                    "height": Math.floor(imageInfo.height / dsFactor)
+                },
+                "downscale_factor": dsFactor
+            },
+            "reviews": [
+                {   
+                    "review_id": 25,
+                    "layers": updatedLayers.map((layer) => ({
+                            "imageData": {
+                                "image": layer.imageData.image,
+                                "bbox": layer.imageData.bbox
+                            },
+                            "weights": layer.weights
+                        })
+                    )
+                }
+            ]
+        };
+        //console.log(saveData);
 
         // Send the data to database here
-        console.log(updatedLayers);
+        sendToDatabase(saveData);
     }
 
     // We render each color/layer separately so we can retrieve individual ImageData objects
