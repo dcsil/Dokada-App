@@ -7,8 +7,8 @@ load_dotenv()
 USER = os.getenv("user")
 PASSWORD = os.getenv("password")
 if USER == None or PASSWORD == None:
-    USER = ""
-    PASSWORD = ""
+    USER = "default"
+    PASSWORD = "defaultUser"
 
 CONNECTION_STRING = "mongodb+srv://" + USER + ":" + PASSWORD + "@cluster0.aiofrm2.mongodb.net/?retryWrites=true&w=majority"
 
