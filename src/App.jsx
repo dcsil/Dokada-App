@@ -17,13 +17,12 @@ function App() {
   })
   return (
     <div className="App">
-      <Menu/>
-      <p id="app-live">Hello World</p>
+      <Menu />
       <Routes>
-        <Route path="/canvas" element={<CanvasPage/>} />
-        <Route path="/dashboard" element={<Dashboard/>} />
-        <Route path="/login" element={<Auth/>} />
-        <Route path="/" element={<HomePage/>} />
+        <Route path="/canvas" element={<CanvasPage />} />
+        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/login" element={<Auth />} />
+        <Route path="/" element={<HomePage />} />
       </Routes>
     </div>
   );

@@ -4,6 +4,6 @@ import { BrowserRouter } from 'react-router-dom';
 
 test('Basic App rendering', async() => {
     render(<BrowserRouter><App/></BrowserRouter>)
-    const linkElement = screen.getByText(/hello world/i);
+    const linkElement = screen.getByText(/Dokada/i);
     expect(linkElement).toBeInTheDocument();
 })

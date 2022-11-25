@@ -1,94 +1,74 @@
-import { useState } from "react";
-import "bootstrap/dist/css/bootstrap.min.css";
+// import React from 'react';
+import {
+  MDBBtn,
+  MDBContainer,
+  MDBRow,
+  MDBCol,
+  MDBInput,
+} from "mdb-react-ui-kit";
 
 function Auth() {
-
-  const [password, setPassword] = useState("");
-  const [email, setEmail] = useState("");
-  const [passwordError, setpasswordError] = useState("");
-  const [emailError, setemailError] = useState("");
-
-  const handleValidation = (event) => {
-    let formIsValid = true;
-
-    if (!email.match(/^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/)) {
-      formIsValid = false;
-      setemailError("Email Not Valid");
-      return false;
-    } else {
-      setemailError("");
-      formIsValid = true;
-    }
-
-    if (!password.match(/^[a-zA-Z]{8,22}$/)) {
-      formIsValid = false;
-      setpasswordError(
-        "Only Letters and length must best min 8 Chracters and Max 22 Chracters"
-      );
-      return false;
-    } else {
-      setpasswordError("");
-      formIsValid = true;
-    }
-
-    return formIsValid;
-  };
-
-  const loginSubmit = (e) => {
-    e.preventDefault();
-    handleValidation();
-  };
-
   return (
-    <div className="App p-5">
-      <div className="container">
-        <div className="row d-flex justify-content-center">
-          <div className="col-md-4">
-            <form id="loginform" onSubmit={loginSubmit}>
-              <div className="form-group">
-                <label>Email address</label>
-                <input
-                  type="email"
-                  className="form-control"
-                  id="EmailInput"
-                  name="EmailInput"
-                  aria-describedby="emailHelp"
-                  placeholder="Enter email"
-                  onChange={(event) => setEmail(event.target.value)}
-                />
-                <small id="emailHelp" className="text-danger form-text">
-                  {emailError}
-                </small>
-              </div>
-              <div className="form-group">
-                <label>Password</label>
-                <input
-                  type="password"
-                  className="form-control"
-                  id="exampleInputPassword1"
-                  placeholder="Password"
-                  onChange={(event) => setPassword(event.target.value)}
-                />
-                <small id="passworderror" className="text-danger form-text">
-                  {passwordError}
-                </small>
-              </div>
-              <div className="form-group form-check">
-                <input
-                  type="checkbox"
-                  className="form-check-input"
-                  id="exampleCheck1"
-                />
-                <label className="form-check-label">Check me out</label>
-              </div>
-              <button type="submit" className="btn btn-primary">
-                Submit
-              </button>
-            </form>
+    <MDBContainer className="my-5 gradient-form">
+      <MDBRow>
+        <MDBCol col="6" className="mb-5">
+          <div className="d-flex flex-column ms-5">
+            <div className="text-center">
+              <img
+                src={require("../images/Dokada.png")}
+                style={{ width: "385px" }}
+                alt="logo"
+              />
+              <h1 className="mt-1 mb-5 pb-1 ">We are DOKADA</h1>
+            </div>
+
+            <p>Please login to your account</p>
+
+            <MDBInput
+              wrapperClass="mb-4"
+              label="Email address"
+              id="form1"
+              type="email"
+            />
+            <MDBInput
+              wrapperClass="mb-4"
+              label="Password"
+              id="form2"
+              type="password"
+            />
+
+            <div className="text-center pt-1 mb-5 pb-1">
+              <MDBBtn className="mb-4 w-100 gradient-custom-2">Sign in</MDBBtn>
+              <a className="text-muted" href="#!">
+                Forgot password?
+              </a>
+            </div>
+
+            <div className="d-flex flex-row align-items-center justify-content-center pb-4 mb-4">
+              <p className="mb-0">Don't have an account?</p>
+              <MDBBtn outline className="mx-2" color="danger">
+                CREATE NEW
+              </MDBBtn>
+            </div>
           </div>
-        </div>
-      </div>
-    </div>
+        </MDBCol>
+
+        <MDBCol col="6" className="mb-5">
+          <div className="d-flex flex-column  justify-content-center gradient-custom-2 h-100 mb-4">
+            <div className="text-white px-3 py-4 p-md-5 mx-md-4">
+              <h4 class="mb-4">We are more than just a company</h4>
+              <p class="small mb-0">
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
+                eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
+                enim ad minim veniam, quis nostrud exercitation ullamco laboris
+                nisi ut aliquip ex ea commodo consequat.
+              </p>
+            </div>
+          </div>
+        </MDBCol>
+      </MDBRow>
+    </MDBContainer>
   );
 }
+
 export default Auth;
