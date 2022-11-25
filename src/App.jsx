@@ -24,7 +24,6 @@ function App() {
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/login" element={<Auth />} />
         <Route path="/" element={<HomePage />} />
-        <Route path="/login" element={<Auth />} />
       </Routes>
     </div>
   );
