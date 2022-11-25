@@ -61,5 +61,8 @@
   },
   "optionalDependencies": {
     "fsevents": "^2.3.2"
-  }
+  },
+  "overrides": {
+    "autoprefixer": "10.4.5"
+}
 }
