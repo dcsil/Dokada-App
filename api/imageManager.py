@@ -56,6 +56,11 @@ def get_review(data):
 
     return review
 
+def get_product(data):    
+    product = db.products.find_one({"product_id": data["product_id"]})    
+    product.pop("_id")
+    return product
+
 
 # initialize the accumulative data for a new product, check documentation for data format
 def init_acc_data(product_id, width, height):
