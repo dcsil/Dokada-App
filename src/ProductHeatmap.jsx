@@ -5,13 +5,15 @@ import { Stage, Layer, Rect} from 'react-konva';
 // ComponentDidMount equivalent
 
 const ProductHeatmap = (arg) => {
+
+  // Fetch data from HardcodelayerData
   //const layerdata = getLayers();
   //console.log(layerdata);
 
   const [layerdata, setlayerdata] = React.useState({});
 
   const fetchReview = () => {
-    const jsonData = {"review_id": 25};
+    const jsonData = {"review_id": 26};
     return fetch(
       '/image-api', {
           method: 'POST',
@@ -61,10 +63,10 @@ const ProductHeatmap = (arg) => {
 
   const drawheatmap = () => {
     if (Object.keys(layerdata).length === 0) {
-      return;
+      return <div/>;
     }
 
-    console.log(layerdata);
+    //console.log(layerdata);
     const renderContent = [];
     const dsFactor = layerdata.dimensions.downscale_factor;
     const colors = [
@@ -78,7 +80,7 @@ const ProductHeatmap = (arg) => {
     for (let layer = 0; layer < layerCount; layer++) {
       let wBox = layerdata.layers[layer].imageData.bbox.xMax - layerdata.layers[layer].imageData.bbox.xMin;
       let hBox = layerdata.layers[layer].imageData.bbox.yMax - layerdata.layers[layer].imageData.bbox.yMin;
-      console.log(layerdata.layers[layer]);
+      //console.log(layerdata.layers[layer]);
 
       for (let h = 0; h < hBox; h++) {
         for (let w = 0; w < wBox; w++) {
