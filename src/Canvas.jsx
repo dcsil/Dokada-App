@@ -199,7 +199,8 @@ const Canvas = (arg) => {
             // Retrieve the ImageData data structure
             // https://developer.mozilla.org/en-US/docs/Web/API/ImageData
             const imageData = ctx.getImageData(0, 0, imageInfo.width-1, imageInfo.height-1);
-    
+            
+            //console.log(imageData)
             // Set Downscale factor and give the work to a downscaling function
             // Naive bounding box function, pick min/max x and min/max ys to just save some computing space
             const dsImageData = downscaleAndBBox(imageData, dsFactor);
@@ -222,7 +223,7 @@ const Canvas = (arg) => {
             },
             "reviews": [
                 {   
-                    "review_id": 25,
+                    "review_id": 26,
                     "layers": updatedLayers.map((layer) => ({
                             "imageData": {
                                 "image": layer.imageData.image,
@@ -246,7 +247,11 @@ const Canvas = (arg) => {
 
         for (let layer = 0; layer < layerCount; layer++) {
             layerContent.push(
-                <Layer key={layer}>
+                <Layer 
+                    key={layer}
+                    width={imageInfo.width}
+                    height={imageInfo.height}
+                >
                 {
                 layerData[layer].lines.map((line, i) => (
                     <Line
