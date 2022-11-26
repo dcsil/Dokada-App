@@ -5,7 +5,7 @@ import json
 def test_image_aggregate():
     #Adding a 2x2 array residing in the bot right corner of a 3x3 array 
     aggr_array = [1]*9
-    image_array = [2]*4
+    image_array = [2]*9
     dimensions = {"width": 3, "height": 3}
     img_weight = 2
     bbox = {"xMin": 1, "xMax": 2, "yMin": 1, "yMax": 2}

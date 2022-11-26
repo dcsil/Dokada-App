@@ -9,7 +9,7 @@ def test_home_page_post():
     # Create a test client using the Flask application configured for testing
     with flask_app.test_client() as test_client:
         response = test_client.get('/')
-        assert response.status_code == 200
+        assert response.status_code >= 200 and response.status_code <= 300
 
 """
 def test_store_load_api():
