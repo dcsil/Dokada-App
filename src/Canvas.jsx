@@ -229,7 +229,12 @@ const Canvas = (arg) => {
                                 "image": layer.imageData.image,
                                 "bbox": layer.imageData.bbox
                             },
-                            "weights": layer.weights
+                            "weights": {
+                                //Map [0, 100] to [-50, 50]
+                                'quality': layer.weights.quality - 50, 
+                                'style': layer.weights.style - 50, 
+                                'fit': layer.weights.fit - 50
+                            }
                         })
                     )
                 }
