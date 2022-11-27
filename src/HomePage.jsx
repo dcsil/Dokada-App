@@ -9,6 +9,7 @@ function HomePage() {
       {/* <p>HomePage goes here!!!</p> */}
 
       {/*Temporary, used to work on pages individually for now*/}
+      <br />
       <Button
         href="#/canvas"
         variant="contained"
