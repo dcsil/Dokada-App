@@ -40,7 +40,19 @@ def get_product_review(data):
     for review in reviews:
         review.pop("_id")
         review_lst.append(review)
-    return review_lst
+    
+    product = db.products.find_one({"product_id": review["product_id"]})
+    
+    returnContent = {
+        'reviews': review_lst,
+        'dimensions': {
+            'width': product['imageDimensions']['width'],
+            'height': product['imageDimensions']['height'],
+            'downscale_factor': product['downscale_factor']
+        }
+    }
+
+    return returnContent
 
 #Need to filter by date
 def get_review(data):    

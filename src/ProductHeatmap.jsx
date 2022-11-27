@@ -1,19 +1,21 @@
 import React from 'react';
 import { Stage, Layer, Rect} from 'react-konva';
-//import getLayers from './HardcodelayerData';
-
-// ComponentDidMount equivalent
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
+import CircularProgress from '@mui/material/CircularProgress';
 
 const ProductHeatmap = (arg) => {
 
-  // Fetch data from HardcodelayerData
-  //const layerdata = getLayers();
-  //console.log(layerdata);
-
-  const [layerdata, setlayerdata] = React.useState({});
+  const [productReviews, setLayerData] = React.useState([]);
+  const [productData, setProductData] = React.useState({});
+  const [currentReview, setCurrentReview] = React.useState(0);
+  const [previousReview, setPreviousReview] = React.useState(-1);
+  const [renderContent, setRenderContent] = React.useState([]);
 
   const fetchReview = () => {
-    const jsonData = {"review_id": 26};
+    const jsonData = {"product_id": 2};
     return fetch(
       '/image-api', {
           method: 'POST',
@@ -21,15 +23,16 @@ const ProductHeatmap = (arg) => {
               'Content-Type': 'application/json'
             },
           body: JSON.stringify({
-            "option": 'get-review',
+            "option": 'get-reviews-for-product',
             'content': jsonData
           })
       }
     ).then((response) => response.json())
     .then((data) => {
       console.log('Success in retrieving review');
-      //console.log(data.content)
-      setlayerdata(data.content);
+      console.log(data.content)
+      setLayerData(data.content.reviews);
+      setProductData(data.content.dimensions)
     })
     .catch((error) => {
       console.error('Error:', error);
@@ -53,6 +56,24 @@ const ProductHeatmap = (arg) => {
     
   };
 
+  const updateCurrentReview = (value) => {
+    // Reset other stuff then set review
+    if (currentReview !== value) {
+      setCurrentReview(value);
+    }
+  };
+
+  const getReviewSelect = () => {
+    const menuItems = [];
+    for (let i = 0; i < productReviews.length; i++) {
+      menuItems.push(
+        <MenuItem value={i}>{i}</MenuItem>
+      );
+    }
+
+    return menuItems;
+  }
+
   const getImgDimensions = ({target: img}) => {
     // Update image info, we have to do this if we aren't passed the dimensions
     setImageInfo({
@@ -61,14 +82,16 @@ const ProductHeatmap = (arg) => {
     })
   }
 
-  const drawheatmap = () => {
-    if (Object.keys(layerdata).length === 0) {
-      return <div/>;
-    }
+  const computeheatmap = () => {
 
-    //console.log(layerdata);
-    const renderContent = [];
-    const dsFactor = layerdata.dimensions.downscale_factor;
+    if (productReviews.length === 0 || currentReview === previousReview){
+      return;
+    }
+    
+    const reviewData = productReviews[currentReview];
+
+    const newRenderContent = [];
+    const dsFactor = productData.downscale_factor;
     const colors = [
       {id: 0, color: "red", colorCode: "#FF0000A0"},
       {id: 1, color: "green", colorCode: "#00FF00A0"},
@@ -76,18 +99,18 @@ const ProductHeatmap = (arg) => {
       {id: 3, color: "pink", colorCode: "#FF00FFA0"},
       {id: 4, color: "eraser", colorCode: "#000000FF"},
     ]
-    const layerCount = layerdata.layers.length-1;
+    const layerCount = reviewData.layers.length-1;
     for (let layer = 0; layer < layerCount; layer++) {
-      let wBox = layerdata.layers[layer].imageData.bbox.xMax - layerdata.layers[layer].imageData.bbox.xMin;
-      let hBox = layerdata.layers[layer].imageData.bbox.yMax - layerdata.layers[layer].imageData.bbox.yMin;
-      //console.log(layerdata.layers[layer]);
+      let wBox = reviewData.layers[layer].imageData.bbox.xMax - reviewData.layers[layer].imageData.bbox.xMin;
+      let hBox = reviewData.layers[layer].imageData.bbox.yMax - reviewData.layers[layer].imageData.bbox.yMin;
+
 
       for (let h = 0; h < hBox; h++) {
         for (let w = 0; w < wBox; w++) {
-          let xDs = layerdata.layers[layer].imageData.bbox.xMin + w;
-          let yDs = layerdata.layers[layer].imageData.bbox.yMin + h;
-          if (layerdata.layers[layer].imageData.image[yDs*layerdata.dimensions.width + xDs]) {
-            renderContent.push(
+          let xDs = reviewData.layers[layer].imageData.bbox.xMin + w;
+          let yDs = reviewData.layers[layer].imageData.bbox.yMin + h;
+          if (reviewData.layers[layer].imageData.image[yDs*productData.width + xDs]) {
+            newRenderContent.push(
               <Rect
                 x={xDs*dsFactor}
                 y={yDs*dsFactor}
@@ -101,7 +124,37 @@ const ProductHeatmap = (arg) => {
       }
     }
 
-    return renderContent;
+    setRenderContent(newRenderContent);
+    setPreviousReview(currentReview);
+  }
+
+  const drawheatmap = () => {
+    if (productReviews.length === 0 || currentReview !== previousReview) {
+      console.log('1');
+      return (
+        <div style={{margin:'auto'}}>        
+          <CircularProgress size="8em"/>
+        </div>
+      )
+    }
+    else {
+      console.log('2')
+      return (
+        <Stage
+          id="canvasStage"
+          style={{position: 'absolute', left: 0, top: 0}}
+          width={imageInfo.width}
+          height={imageInfo.height}
+          onMouseDown={handleMouseDown}
+          onMousemove={handleMouseMove}
+          onMouseup={handleMouseUp}
+        >
+          <Layer>
+            {renderContent}
+          </Layer>
+        </Stage>
+      )
+    }
   }
 
   // ComponentDidMount equivalent
@@ -115,21 +168,24 @@ const ProductHeatmap = (arg) => {
         Important to have this relative and img absolute. The img element will be absolute relative to its parent
     */
     <div>
-        <div style={{position: 'relative', margin:'auto', padding:'10px', width: imageInfo.width, height:imageInfo.height}}>
-            <img id="imageUnderCanvas" style={{position: 'absolute', left: 0, top: 0, borderStyle: 'solid'}} onLoad={getImgDimensions} src={arg.imageUrl} alt={"Cannot retrieve" + arg.imageUrl}/>
-            <Stage
-                id="canvasStage"
-                style={{position: 'absolute', left: 0, top: 0}}
-                width={imageInfo.width}
-                height={imageInfo.height}
-                onMouseDown={handleMouseDown}
-                onMousemove={handleMouseMove}
-                onMouseup={handleMouseUp}
+        <div style={{padding: '10px'}}>
+          <FormControl fullWidth>
+            <InputLabel id="review-select-label">Review #</InputLabel>
+            <Select
+              labelId="review-select-label"
+              id="review-simple-select"
+              value={currentReview}
+              label="Select Review"
+              onChange={(e)=>(updateCurrentReview(e.target.value))}
             >
-                <Layer>
-                  {drawheatmap()}
-                </Layer>
-            </Stage>
+              {getReviewSelect()}
+            </Select>
+          </FormControl>
+        </div>
+        <div style={{position: 'relative', margin:'auto', padding:'10px', width: imageInfo.width, height:imageInfo.height, display:'flex', alignItems:'center'}}>
+            <img id="imageUnderCanvas" style={{position: 'absolute', left: 0, top: 0, borderStyle: 'solid'}} onLoad={getImgDimensions} src={arg.imageUrl} alt={"Cannot retrieve" + arg.imageUrl}/>
+            {computeheatmap()}
+            {drawheatmap()}
         </div>
     </div>
 );
