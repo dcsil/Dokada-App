@@ -4,7 +4,7 @@ from flask_restful import Api, Resource, reqparse
 from flask_cors import CORS #comment this on deployment
 import sentry_sdk
 from sentry_sdk.integrations.flask import FlaskIntegration
-from api.imageManager import store_reviews, get_review
+from api.imageManager import store_reviews, get_review, get_product
 
 #from api.greet import greet
 sentry_sdk.init(
@@ -24,11 +24,13 @@ api = Api(app)
 
 @app.errorhandler(404)
 def not_found(e):
-    return send_from_directory(app.static_folder,'index.html')
+    print("Not Found")
+    return send_from_directory(app.static_folder,'index.html'), 201
 
 @app.route('/')
-def index():    
-    return send_from_directory(app.static_folder,'index.html')
+def index():
+    print("Index")
+    return send_from_directory(app.static_folder,'index.html'), 201
 
 @app.route('/debug-sentry')
 def trigger_error():
@@ -36,13 +38,50 @@ def trigger_error():
 
 @app.route('/image-api', methods = ['POST', 'GET'])
 def image_portal():
-    if request.method == 'POST':
-        #print(request.get_json())
-        store_reviews(request.get_json())
-        return("recieved")
-    elif request.method == 'GET':
-        #print(json.dumps(get_review(request.get_json())))
-        return json.dumps(get_review(request.get_json()))
+
+    print("Image api")
+    print(request)
+    requestBody = request.get_json()
+    print(requestBody)
+    
+    if requestBody['option'] == 'store-review':
+        print("Save image")
+        store_reviews(requestBody['content'])
+        response = {
+            'content': 'received'
+        }
+        return response, 200
+    elif requestBody['option'] == 'get-review':
+        print("Retrieve image")
+        reviews = get_review(requestBody['content'])
+        print(reviews)
+        response = {
+            'content': reviews
+        }
+        return response, 200
+
+@app.route('/product-api', methods = ['POST', 'GET'])
+def product_portal():
+
+    requestBody = request.get_json()
+
+    if requestBody['option'] == 'store-product':
+        
+        store_reviews(requestBody['content'])
+        response = {
+            'content': 'received'
+        }
+        return response, 200
+
+    elif requestBody['option'] == 'get-product':
+       
+        product = get_product(requestBody['content'])
+        
+        response = {
+            'content': product
+        }
+        return response, 200
+
 
 """
 @app.route("/", defaults={'path':''})

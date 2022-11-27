@@ -167,27 +167,83 @@ const Canvas = (arg) => {
         return dsImageData;
     }
 
+    const sendToDatabase = (jsonData) => {
+        return fetch(
+            '/image-api', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                  },
+                body: JSON.stringify({
+                    'option': 'store-review',
+                    'content': jsonData
+                })
+            }
+        ).then((response) => response.json())
+        .then((data) => {
+          console.log('Success:', data);
+          return data;
+        })
+        .catch((error) => {
+          console.error('Error:', error);
+          return error;
+        });
+    };
+
     const saveImage = () => {
         let updatedLayers = [...layerData];
+        const dsFactor = 4;
         for (let i = 0; i < layerCount; i++) {
             const ctx = canvasCtx.current.ctxList[i].getContext("2d");
 
             // Retrieve the ImageData data structure
             // https://developer.mozilla.org/en-US/docs/Web/API/ImageData
             const imageData = ctx.getImageData(0, 0, imageInfo.width-1, imageInfo.height-1);
-    
+            
+            //console.log(imageData)
             // Set Downscale factor and give the work to a downscaling function
             // Naive bounding box function, pick min/max x and min/max ys to just save some computing space
-            const dsFactor = 4;
             const dsImageData = downscaleAndBBox(imageData, dsFactor);
             
             updatedLayers[i].imageData = dsImageData;
         }
 
         updateLayer(updatedLayers);
+        //console.log(updatedLayers);
+
+        // Hardcode metadata for saveData for now, but we need to get this dynamically later
+        const saveData = {
+            "product_info": {
+                "product_id": 2,
+                "imageDimensions": {
+                    "width": Math.floor(imageInfo.width / dsFactor),
+                    "height": Math.floor(imageInfo.height / dsFactor)
+                },
+                "downscale_factor": dsFactor
+            },
+            "reviews": [
+                {   
+                    "review_id": 26,
+                    "layers": updatedLayers.map((layer) => ({
+                            "imageData": {
+                                "image": layer.imageData.image,
+                                "bbox": layer.imageData.bbox
+                            },
+                            "weights": {
+                                //Map [0, 100] to [-50, 50]
+                                'quality': layer.weights.quality - 50, 
+                                'style': layer.weights.style - 50, 
+                                'fit': layer.weights.fit - 50
+                            }
+                        })
+                    )
+                }
+            ]
+        };
+        //console.log(saveData);
 
         // Send the data to database here
-        console.log(updatedLayers);
+        sendToDatabase(saveData);
     }
 
     // We render each color/layer separately so we can retrieve individual ImageData objects
@@ -196,7 +252,11 @@ const Canvas = (arg) => {
 
         for (let layer = 0; layer < layerCount; layer++) {
             layerContent.push(
-                <Layer key={layer}>
+                <Layer 
+                    key={layer}
+                    width={imageInfo.width}
+                    height={imageInfo.height}
+                >
                 {
                 layerData[layer].lines.map((line, i) => (
                     <Line

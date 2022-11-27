@@ -1,12 +1,40 @@
 import React from 'react';
 import { Stage, Layer, Rect} from 'react-konva';
-import getLayers from './HardcodelayerData';
+//import getLayers from './HardcodelayerData';
 
 // ComponentDidMount equivalent
 
 const ProductHeatmap = (arg) => {
-  const layerdata = getLayers();
-  console.log(layerdata);
+
+  // Fetch data from HardcodelayerData
+  //const layerdata = getLayers();
+  //console.log(layerdata);
+
+  const [layerdata, setlayerdata] = React.useState({});
+
+  const fetchReview = () => {
+    const jsonData = {"review_id": 26};
+    return fetch(
+      '/image-api', {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json'
+            },
+          body: JSON.stringify({
+            "option": 'get-review',
+            'content': jsonData
+          })
+      }
+    ).then((response) => response.json())
+    .then((data) => {
+      console.log('Success in retrieving review');
+      //console.log(data.content)
+      setlayerdata(data.content);
+    })
+    .catch((error) => {
+      console.error('Error:', error);
+    });
+  }
 
   const [imageInfo, setImageInfo] = React.useState({
     width: window.innerWidth,
@@ -34,8 +62,13 @@ const ProductHeatmap = (arg) => {
   }
 
   const drawheatmap = () => {
+    if (Object.keys(layerdata).length === 0) {
+      return <div/>;
+    }
+
+    //console.log(layerdata);
     const renderContent = [];
-    const dsFactor = 4;
+    const dsFactor = layerdata.dimensions.downscale_factor;
     const colors = [
       {id: 0, color: "red", colorCode: "#FF0000A0"},
       {id: 1, color: "green", colorCode: "#00FF00A0"},
@@ -43,17 +76,17 @@ const ProductHeatmap = (arg) => {
       {id: 3, color: "pink", colorCode: "#FF00FFA0"},
       {id: 4, color: "eraser", colorCode: "#000000FF"},
     ]
-    const layerCount = layerdata.length-1;
+    const layerCount = layerdata.layers.length-1;
     for (let layer = 0; layer < layerCount; layer++) {
-      let wBox = layerdata[layer].imageData.bbox.xMax - layerdata[layer].imageData.bbox.xMin;
-      let hBox = layerdata[layer].imageData.bbox.yMax - layerdata[layer].imageData.bbox.yMin;
-      console.log(layerdata[layer]);
+      let wBox = layerdata.layers[layer].imageData.bbox.xMax - layerdata.layers[layer].imageData.bbox.xMin;
+      let hBox = layerdata.layers[layer].imageData.bbox.yMax - layerdata.layers[layer].imageData.bbox.yMin;
+      //console.log(layerdata.layers[layer]);
 
       for (let h = 0; h < hBox; h++) {
         for (let w = 0; w < wBox; w++) {
-          let xDs = layerdata[layer].imageData.bbox.xMin + w;
-          let yDs = layerdata[layer].imageData.bbox.yMin + h;
-          if (layerdata[layer].imageData.image[yDs*layerdata[layer].imageData.width + xDs]) {
+          let xDs = layerdata.layers[layer].imageData.bbox.xMin + w;
+          let yDs = layerdata.layers[layer].imageData.bbox.yMin + h;
+          if (layerdata.layers[layer].imageData.image[yDs*layerdata.dimensions.width + xDs]) {
             renderContent.push(
               <Rect
                 x={xDs*dsFactor}
@@ -70,6 +103,12 @@ const ProductHeatmap = (arg) => {
 
     return renderContent;
   }
+
+  // ComponentDidMount equivalent
+   React.useEffect(() => {
+    console.log('Initial rendering complete')
+    fetchReview();
+  }, []);
 
   return (
     /*
