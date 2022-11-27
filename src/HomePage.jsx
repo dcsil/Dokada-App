@@ -12,7 +12,7 @@ function HomePage() {
       {/*Temporary, used to work on pages individually for now*/}
       <br />
       <Button
-        href="#/canvas"
+        href="/canvas"
         variant="contained"
         size="large"
         color="secondary"
@@ -24,7 +24,7 @@ function HomePage() {
       <br />
       <br />
       <Button
-        href="#/dashboard"
+        href="/dashboard"
         variant="contained"
         size="large"
         color="secondary"
@@ -37,7 +37,7 @@ function HomePage() {
       <br />
 
       <Button
-        href="#/login"
+        href="/login"
         variant="contained"
         size="large"
         color="secondary"
