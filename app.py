@@ -4,7 +4,7 @@ from flask_restful import Api, Resource, reqparse
 from flask_cors import CORS #comment this on deployment
 import sentry_sdk
 from sentry_sdk.integrations.flask import FlaskIntegration
-from api.imageManager import store_reviews, get_review, get_product
+from api.imageManager import store_reviews, get_review, get_product, get_product_review
 
 #from api.greet import greet
 sentry_sdk.init(
@@ -51,12 +51,12 @@ def image_portal():
             'content': 'received'
         }
         return response, 200
-    elif requestBody['option'] == 'get-review':
+    elif requestBody['option'] == 'get-reviews-for-product':
         print("Retrieve image")
-        reviews = get_review(requestBody['content'])
-        print(reviews)
+        reviewInfo = get_product_review(requestBody['content'])
+        
         response = {
-            'content': reviews
+            'content': reviewInfo
         }
         return response, 200
 
