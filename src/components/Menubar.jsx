@@ -3,7 +3,6 @@ import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import "../styles/Navbar.css";
 import axios from "axios";
-import { Button } from "bootstrap";
 
 function Menu(props) {
   function logMeOut() {

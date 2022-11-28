@@ -67,25 +67,13 @@ def logout():
     unset_jwt_cookies(response)
     return response
 
-
-@app.route('/profile')
-@jwt_required()
-def my_profile():
-    response_body = {
-        "name": "Nagato",
-        "about" :"Hello! I'm a full stack developer that loves python and javascript"
-    }
-
-    return response_body
-
-
 @app.errorhandler(404)
 def not_found(e):
     print("Not Found")
     return send_from_directory(app.static_folder,'index.html'), 201
 
 @app.route('/')
-@jwt_required()
+# @jwt_required()
 def index():
     print("Index")
     return send_from_directory(app.static_folder,'index.html'), 201

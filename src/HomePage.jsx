@@ -1,15 +1,35 @@
-import './styles/HomePage.css';
+import React from "react";
+import "./styles/HomePage.css";
 // import { Link } from 'react-router-dom';
 import Button from "@mui/material/Button";
+import axios from "axios";
 
-function HomePage() {
-
+function HomePage(props) {
+  function getData() {
+    axios({
+      method: "GET",
+      url: "/",
+      headers: {
+        Authorization: "Bearer " + props.token,
+      },
+    })
+      .then((response) => {
+        const res = response.data;
+        res.access_token && props.setToken(res.access_token);
+      })
+      .catch((error) => {
+        if (error.response) {
+          console.log(error.response);
+          console.log(error.response.status);
+          console.log(error.response.headers);
+        }
+      });
+  }
+  React.useEffect(() => {
+    getData();
+  }, []);
   return (
     <div style={{ textAlign: "center" }}>
-      {/* <header style={{ backgroundColor: "#82C3FF05", minHeight: "100vh" }}> */}
-      {/* <p>HomePage goes here!!!</p> */}
-
-      {/*Temporary, used to work on pages individually for now*/}
       <br />
       <Button
         href="/canvas"
@@ -18,6 +38,7 @@ function HomePage() {
         color="secondary"
         style={{ width: 200 }}
         className="gradient-custom-2"
+        onClick={getData}
       >
         Canvas
       </Button>
@@ -36,18 +57,6 @@ function HomePage() {
       <br />
       <br />
 
-      <Button
-        href="/login"
-        variant="contained"
-        size="large"
-        color="secondary"
-        style={{ width: 200 }}
-        className="gradient-custom-2"
-      >
-        Login
-      </Button>
-      {/* <Link to="/dashboard">Dashboard</Link> */}
-      {/* </header> */}
     </div>
   );
 }
