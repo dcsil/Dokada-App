@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './styles/index.css';
 import App from './App';
-import { HashRouter } from 'react-router-dom';
+// import { HashRouter } from 'react-router-dom';
 import reportWebVitals from './reportWebVitals';
 import 'mdb-react-ui-kit/dist/css/mdb.min.css';
 import "@fortawesome/fontawesome-free/css/all.min.css";
@@ -10,9 +10,7 @@ import "@fortawesome/fontawesome-free/css/all.min.css";
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <HashRouter>
-    <App/>
-  </HashRouter>
+    <App />
 );
 
 // If you want to start measuring performance in your app, pass a function

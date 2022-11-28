@@ -1,10 +1,16 @@
 import json
-from flask import Flask, send_from_directory, request, jsonify
+from flask import Flask, send_from_directory, request, jsonify, redirect, url_for
 from flask_restful import Api, Resource, reqparse
 from flask_cors import CORS #comment this on deployment
 import sentry_sdk
 from sentry_sdk.integrations.flask import FlaskIntegration
 from api.imageManager import store_reviews, get_review, get_product, get_product_review
+from datetime import datetime, timedelta, timezone
+from flask_jwt_extended import create_access_token,get_jwt,get_jwt_identity, \
+                               unset_jwt_cookies, jwt_required, JWTManager
+
+
+
 
 #from api.greet import greet
 sentry_sdk.init(
@@ -22,12 +28,55 @@ app = Flask(__name__, static_url_path='/', static_folder='build')
 CORS(app) #comment this on deployment
 api = Api(app)
 
+app.config["JWT_SECRET_KEY"] = "please-remember-to-change-me"
+app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(hours=1)
+jwt = JWTManager(app)
+
+
+@app.after_request
+def refresh_expiring_jwts(response):
+    try:
+        exp_timestamp = get_jwt()["exp"]
+        now = datetime.now(timezone.utc)
+        target_timestamp = datetime.timestamp(now + timedelta(minutes=30))
+        if target_timestamp > exp_timestamp:
+            access_token = create_access_token(identity=get_jwt_identity())
+            data = response.get_json()
+            if type(data) is dict:
+                data["access_token"] = access_token
+                response.data = json.dumps(data)
+        return response
+    except (RuntimeError, KeyError):
+        # Case where there is not a valid JWT. Just return the original respone
+        return response
+
+
+@app.route('/token', methods=["POST"])
+def create_token():
+    print("hello hello")
+    email = request.json.get("email", None)
+    password = request.json.get("password", None)
+    if email != "test" or password != "test":
+        return {"msg": "Wrong email or password"}, 401
+
+    access_token = create_access_token(identity=email)
+    response = {"access_token":access_token}
+    return response
+
+
+@app.route("/logout", methods=["POST"])
+def logout():
+    response = jsonify({"msg": "logout successful"})
+    unset_jwt_cookies(response)
+    return response
+
 @app.errorhandler(404)
 def not_found(e):
     print("Not Found")
     return send_from_directory(app.static_folder,'index.html'), 201
 
 @app.route('/')
+# @jwt_required()
 def index():
     print("Index")
     return send_from_directory(app.static_folder,'index.html'), 201
