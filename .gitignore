@@ -8,3 +8,4 @@ __pycache__/app.cpython-310.pyc
 api/.env
 __pycache_
 __pycache__
+*.pyc
