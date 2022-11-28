@@ -22,6 +22,7 @@ function App() {
       <div className="App">
         <Menu token={removeToken} />
         {!token && token !== "" && token !== undefined ? (
+ 
           <Auth setToken={setToken} />
         ) : (
           <>
