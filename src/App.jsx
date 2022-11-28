@@ -6,6 +6,7 @@ import HomePage from './HomePage';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Dashboard from "./Dashboard";
 import Auth from "./components/Auth.jsx";
+import useToken from "./components/useToken";
 import { datadogLogs } from "@datadog/browser-logs";
 
 function App() {
@@ -15,19 +16,30 @@ function App() {
     forwardErrorsToLogs: true,
     sampleRate: 100,
   });
+  const { token, removeToken, setToken } = useToken();
   return (
     <BrowserRouter>
       <div className="App">
-        <Menu />
-        <Routes>
-          <Route path="/canvas" element={<CanvasPage />} />
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/login" element={<Auth />} />
-          <Route path="/" element={<HomePage />} />
-        </Routes>
+        <Menu token={removeToken} />
+        {!token && token !== "" && token !== undefined ? (
+          <Auth setToken={setToken} />
+        ) : (
+          <>
+            <Routes>
+              <Route
+                exact
+                path="/"
+                // element={<HomePage />}
+                element={<HomePage token={token} setToken={setToken} />}
+              />
+              <Route path="/canvas" element={<CanvasPage />} />
+              <Route path="/dashboard" element={<Dashboard />} />
+              {/* <Route path="/login" element={<Auth />} /> */}
+            </Routes>
+          </>
+        )}
       </div>
     </BrowserRouter>
   );
 }
-
 export default App;
