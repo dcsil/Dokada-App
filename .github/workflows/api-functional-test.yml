@@ -36,3 +36,22 @@ jobs:
     - name: Test with pytest
       run: |
         pytest
+
+  coverage:
+    needs: [ test ]
+    name: coverage
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3    
+      with:
+        python-version: "3.10"
+    - name: Install dependencies
+      run: |
+        ./bootstrap
+        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+    
+    - uses: paambaati/codeclimate-action@v2.2.4
+      env:
+        CC_TEST_REPORTER_ID: 674bcf7ef14ff45650f0d4b19b7c7aa216edcdc43ac42993d5e190fa8482c78b
+      with:
+        coverageCommand: coverage run -m pytest; coverage report      
