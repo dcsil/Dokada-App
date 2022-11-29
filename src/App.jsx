@@ -20,11 +20,11 @@ function App() {
   return (
     <BrowserRouter>
       <div className="App">
-        <Menu token={removeToken} />
         {!token && token !== "" && token !== undefined ? (
           <Auth setToken={setToken} />
         ) : (
           <>
+            <Menu token={removeToken} />
             <Routes>
               <Route
                 exact
