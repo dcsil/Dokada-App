@@ -11,7 +11,7 @@ Run the bootstrap script provided in the root directory, the set up will be done
 4. Install a [MongoDB client](https://www.mongodb.com/docs/manual/installation/) that is compatible with your system
 
 ## Run
-Execute "npm build" in root to build the frontend\
+Execute "npm install" and "npm run build" in root to build the frontend\
 Execute "flask run" in the root directory, the server will be hosted locally
 
 ## Testing and CI
