@@ -50,7 +50,7 @@ jobs:
         ./bootstrap
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
     
-    - uses: paambaati/codeclimate-action@v2.2.4
+    - uses: paambaati/codeclimate-action@v3.2.0
       env:
         CC_TEST_REPORTER_ID: 674bcf7ef14ff45650f0d4b19b7c7aa216edcdc43ac42993d5e190fa8482c78b
       with:
