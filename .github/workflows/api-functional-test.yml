@@ -38,7 +38,7 @@ jobs:
         pytest
 
   coverage:
-    needs: [ test ]
+    needs: [ build ]
     name: coverage
     runs-on: ubuntu-latest
     steps:
