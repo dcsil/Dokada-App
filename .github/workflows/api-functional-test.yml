@@ -42,6 +42,7 @@ jobs:
       env:
         CC_TEST_REPORTER_ID: 674bcf7ef14ff45650f0d4b19b7c7aa216edcdc43ac42993d5e190fa8482c78b
       run: |
+        pip install coverage
         coverage run -m pytest
         coverage report && coverage xml  
         export GIT_BRANCH="${GITHUB_REF##*/}"              
