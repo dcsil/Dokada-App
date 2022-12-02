@@ -10,6 +10,7 @@ import { useState } from "react";
 import axios from "axios";
 
 function Auth(props) {
+  const [errorMessage, setErrorMessage] = useState("");
   const [loginForm, setloginForm] = useState({
     email: "",
     password: "",
@@ -28,6 +29,7 @@ function Auth(props) {
         props.setToken(response.data.access_token);
       })
       .catch((error) => {
+        setErrorMessage("WRONG EMAIL OR PASSWORD!");
         if (error.response) {
           console.log(error.response);
           console.log(error.response.status);
@@ -88,7 +90,7 @@ function Auth(props) {
               placeholder="Password"
               value={loginForm.password}
             />
-
+            {errorMessage && <h3 style={{ color: "red" }}> {errorMessage} </h3>}
             <div className="text-center pt-1 mb-5 pb-1">
               <MDBBtn
                 onClick={logMeIn}
@@ -96,6 +98,7 @@ function Auth(props) {
               >
                 Sign in
               </MDBBtn>
+
               <a className="text-muted" href="#!">
                 Forgot password?
               </a>

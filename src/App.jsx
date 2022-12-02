@@ -24,7 +24,7 @@ function App() {
           <Auth setToken={setToken} />
         ) : (
           <>
-            <Menu token={removeToken} />
+            <Menu removeToken={removeToken} />
             <Routes>
               <Route
                 exact
