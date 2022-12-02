@@ -38,13 +38,20 @@ jobs:
       run: |
         pytest
 
-    - run: pip install pytest 
-    - run: coverage run -m pytest
-    - uses: paambaati/codeclimate-action@v3.2.0
+    - name: "Coverage and upload test"
       env:
         CC_TEST_REPORTER_ID: 674bcf7ef14ff45650f0d4b19b7c7aa216edcdc43ac42993d5e190fa8482c78b
-      with:
-        coverageCommand: coverage report && coverage xml
+      run: |
+        export GIT_BRANCH="${GITHUB_REF##*/}"
+        coverage run -m pytest
+        coverage report && coverage xml        
+        curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+        chmod +x ./cc-test-reporter
+        ./cc-test-reporter format-coverage -t simplecov
+        ./cc-test-reporter upload-coverage --id $CC_TEST_REPORTER_ID
+   
+    
+      
            
           
 
