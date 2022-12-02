@@ -4,7 +4,7 @@ import "./styles/HomePage.css";
 import Button from "@mui/material/Button";
 import axios from "axios";
 
-function HomePage(props) {
+function HomePage(props) {  
   function getData() {
     axios({
       method: "GET",

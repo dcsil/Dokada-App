@@ -5,10 +5,15 @@ import React from 'react';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
+import carousel from "./components/Carousel";
 import Select from '@mui/material/Select';
 import jacket from './images/denim_jacket.png'
+// import tshirt from "./images/tshirt.png";
+// import pants from "./images/pants.png";
+// import shirt from "./images/shirt.png";
 
 function Dashboard() {
+
 
   const [viewType, setViewType] = React.useState('');
 
@@ -18,7 +23,7 @@ function Dashboard() {
 
   const showView = () => {
     if (viewType === 1) {
-      return (<AggregateHeatmap imageUrl={jacket}/>);
+      return <AggregateHeatmap imageUrl={jacket} prductid={2} />;
     }
     else if (viewType === 2) {
       return (<ProductHeatmap imageUrl={jacket}/>);
@@ -33,13 +38,12 @@ function Dashboard() {
   }
 
   return (
-    <div style={{textAlign: "center"}}>
-      <header style={{backgroundColor: "#82C3FF10", minHeight: "100vh"}}>
-        <p>
-            Dashboard goes here
-        </p>
+    <div style={{ textAlign: "center" }}>
+      <carousel />
+      <header style={{ backgroundColor: "#82C3FF10", minHeight: "100vh" }}>
+        <p>Dashboard goes here</p>
 
-        <div style={{padding: '10px'}}>
+        <div style={{ padding: "10px" }}>
           <FormControl fullWidth>
             <InputLabel id="view-select-label">View</InputLabel>
             <Select
@@ -55,9 +59,7 @@ function Dashboard() {
           </FormControl>
         </div>
 
-        <div style={{padding:'10em'}}>
-          {showView()}
-        </div>
+        <div style={{ padding: "10em" }}>{showView()}</div>
       </header>
     </div>
   );

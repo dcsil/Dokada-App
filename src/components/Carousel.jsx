@@ -3,42 +3,97 @@ import jacket from "../images/denim_jacket.png";
 import tshirt from "../images/tshirt.png";
 import pants from "../images/pants.png";
 import shirt from "../images/pants2.png";
+import React, { useState } from "react";
+import "../styles/Carousel.css";
+import Container from "react-bootstrap/Container";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
 
-function Carousel_() {
+function Carousel_(args) {
+  const [id, setId] = useState();
+
+  function handleClick(event, argID) {
+    //   const { value, name } = event.target;
+    //   setloginForm((prevNote) => ({
+    //     ...prevNote,
+    //     [name]: value,
+    //   }));
+    args.updateFunction(event.target.src, argID);
+
+    setId(event.target.id);
+    // console.log(event.target.id);
+    // console.log("printing setid");
+    // console.log(id);
+    console.log(event.target.src, argID);
+  }
+
   return (
-    <Carousel>
-      <Carousel.Item style={{ width: 500, height: 600 }}>
-        <img className="d-block w-100" src={jacket} alt="First slide" />
-        <Carousel.Caption>
-          <h3>First slide label</h3>
-          <p>jacket</p>
-        </Carousel.Caption>
-      </Carousel.Item>
-      <Carousel.Item style={{ width: 500, height: 600 }}>
-        <img className="d-block w-100" src={tshirt} alt="Second slide" />
+    <Container>
+      <Row className="justify-content-md-center">
+        {/* <Col md={{ span: 3, offset: 3 }}> */}
+        <Carousel
+          className="carousel-inner"
+          slide={false}
+          controls={true}
+          prevLabel={"Previous"}
+          style={{ color: "black" }}
+        >
+          <Carousel.Item className="item">
+            <a>
+              <img
+                className="img-thumbnail"
+                id="one"
+                src={jacket}
+                alt="First slide"
+                style={{ width: 550 }}
+                onClick={(e) => {
+                  handleClick(e, 2);
+                }}
+              />
+            </a>
 
-        <Carousel.Caption>
-          <h3>Second slide label</h3>
-          <p>Tshirt</p>
-        </Carousel.Caption>
-      </Carousel.Item>
-      <Carousel.Item style={{ width: 500, height: 600 }}>
-        <img className="d-block w-100" src={pants} alt="Third slide" />
-
-        <Carousel.Caption>
-          <h3>Third slide label</h3>
-          <p>Pants</p>
-        </Carousel.Caption>
-      </Carousel.Item>
-      <Carousel.Item style={{ width: 500, height: 600 }}>
-        <img className="d-block w-100" src={shirt} alt="Third slide" />
-
-        <Carousel.Caption>
-          <h3>Third slide label</h3>
-          <p>Tshirt</p>
-        </Carousel.Caption>
-      </Carousel.Item>
-    </Carousel>
+            <Carousel.Caption></Carousel.Caption>
+          </Carousel.Item>
+          <Carousel.Item className="item">
+            <img
+              id="two"
+              src={tshirt}
+              alt="Second slide"
+              style={{ width: 550 }}
+              onClick={(e) => {
+                handleClick(e, 2);
+              }}
+            />
+            <Carousel.Caption></Carousel.Caption>
+          </Carousel.Item>
+          <Carousel.Item className="item">
+            <img
+              id="three"
+              src={pants}
+              alt="Third slide"
+              style={{ width: 550 }}
+              onClick={(e) => {
+                handleClick(e, 2);
+              }}
+            />
+            <Carousel.Caption></Carousel.Caption>
+          </Carousel.Item>
+          <Carousel.Item className="item">
+            <img
+              id="four"
+              src={shirt}
+              alt="Third slide"
+              style={{ width: 550 }}
+              onClick={(e) => {
+                handleClick(e, 2);
+              }}
+            />
+            <Carousel.Caption></Carousel.Caption>
+          </Carousel.Item>
+        </Carousel>
+        {/* </Col> */}
+      </Row>
+    </Container>
   );
 }
 
