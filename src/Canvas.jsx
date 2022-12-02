@@ -14,11 +14,12 @@ const Canvas = (arg) => {
 
     const [layerID, setTool] = React.useState(0);
     const [strokeSize, setStrokeSize] = React.useState(30);
+    const [imgDimReady, setImgDim] = React.useState(false);
     const isDrawing = React.useRef(false);
     const canvasCtx = React.useRef({});
     const [imageInfo, setImageInfo] = React.useState({
-        width: window.innerWidth,
-        height: window.innerHeight
+        width: 550,
+        height: 550
     });
     const [layerData, updateLayer] = React.useState(
         colors.map((color, i) => (
@@ -99,6 +100,8 @@ const Canvas = (arg) => {
             width: img.naturalWidth,
             height: img.naturalHeight
         })
+        
+        setImgDim(true)
     }
 
     const saveCanvasCtx = () => {
@@ -254,8 +257,6 @@ const Canvas = (arg) => {
             layerContent.push(
                 <Layer 
                     key={layer}
-                    width={imageInfo.width}
-                    height={imageInfo.height}
                 >
                 {
                 layerData[layer].lines.map((line, i) => (
@@ -279,6 +280,49 @@ const Canvas = (arg) => {
         return (layerContent);
     }
 
+    const renderStage = () => {
+        console.log(imgDimReady)
+        /* 
+            It's important to wait until the imageInfo is ready. When a state is updated and React
+            checks their Virtual DOM, they check elements and components for things to update.
+            
+            Unfortunately, element/component initialization with a state variable is not marked
+            for re-rendering when the state variable is updated. So instead we have to conditionally
+            render the component based on some other state.
+
+            In the else case, we render an empty stage so that the handler functions, context finders
+            and other functions that rely on #canvasStage can still work while we update imageInfo
+        */
+        if (imgDimReady) {
+            return (
+                <Stage
+                    id="canvasStage"
+                    style={{position: 'absolute', left: 0, top: 0}}
+                    width={imageInfo.width}
+                    height={imageInfo.height}
+                    onMouseDown={handleMouseDown}
+                    onMousemove={handleMouseMove}
+                    onMouseup={handleMouseUp}
+                >
+                    {layerRender()}
+                </Stage>
+            );
+        }
+        else {
+            return (
+                <Stage
+                    id="canvasStage"
+                    style={{position: 'absolute', left: 0, top: 0}}
+                    width={imageInfo.width}
+                    height={imageInfo.height}
+                    onMouseDown={handleMouseDown}
+                    onMousemove={handleMouseMove}
+                    onMouseup={handleMouseUp}
+                />
+            );
+        }
+    }
+
     // ComponentDidMount equivalent
     React.useEffect(() => {
         console.log('Canvas component mounted')
@@ -292,17 +336,7 @@ const Canvas = (arg) => {
         <div>
             <div style={{position: 'relative', margin:'auto', padding:'10px', width: imageInfo.width, height:imageInfo.height}}>
                 <img id="imageUnderCanvas" style={{position: 'absolute', left: 0, top: 0, borderStyle: 'solid'}} onLoad={getImgDimensions} src={arg.imageUrl} alt={"Cannot retrieve" + arg.imageUrl}/>
-                <Stage
-                    id="canvasStage"
-                    style={{position: 'absolute', left: 0, top: 0}}
-                    width={imageInfo.width}
-                    height={imageInfo.height}
-                    onMouseDown={handleMouseDown}
-                    onMousemove={handleMouseMove}
-                    onMouseup={handleMouseUp}
-                >
-                    {layerRender()}
-                </Stage>
+                {renderStage()}
             </div>
             <div style={{display:"block"}}>
                 <select
