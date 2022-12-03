@@ -13,25 +13,36 @@ def store_reviews(data):
     #Also initialize its aggregate data
     if db.products.find_one({"product_id": product_info["product_id"]}) == None:        
         
-        width = product_info["imageDimensions"]["width"]//product_info["downscale_factor"]
-        height = product_info["imageDimensions"]["height"]//product_info["downscale_factor"]
+        zeroArr = [0]*product_info["imageDimensions"]["width"]*product_info["imageDimensions"]["height"]
         product_info["reviews_count"] = 0
-        product_info["images"] = {"quality": {"positive": [0]*width*height, "negative": [0]*width*height}, "fit": {"positive": [0]*width*height, "negative": [0]*width*height}, "style": {"positive": [0]*width*height, "negative": [0]*width*height}}
+        product_info["images"] = {
+            "quality": {
+                    "positive": zeroArr, "negative": zeroArr, "posCount": zeroArr, "negCount": zeroArr, "bias": zeroArr
+                }, 
+            "fit": {
+                    "positive": zeroArr, "negative": zeroArr, "posCount": zeroArr, "negCount": zeroArr, "bias": zeroArr
+                }, 
+            "style": {
+                    "positive": zeroArr, "negative": zeroArr, "posCount": zeroArr, "negCount": zeroArr, "bias": zeroArr
+                }, 
+        }
 
         db.products.insert_one(product_info)
 
     product = db.products.find_one({"product_id": product_info["product_id"]})
     
-    #This is a list of reviews
+    # This is a list of reviews
     reviews = data["reviews"]
     for review in reviews:
-        review_id = review["review_id"]
         review["product_id"] = product["product_id"]
         review["time_recorded"] = datetime.datetime.now().strftime("%Y/%m/%d %H:%M:%S")
-        if db.reviews.find_one({"review_id": review_id}) == None:
-            db.reviews.insert_one(review)
-        aggregate_review(review, product)        
-        db.products.replace_one({"product_id": product["product_id"]}, product)
+        product["reviews_count"] += 1
+
+        # Aggregate the information for the aggregate page
+        aggregate_review(review, product)
+        db.reviews.insert_one(review)
+
+    db.products.replace_one({"product_id": product["product_id"]}, product)
 
 #Not Being Called RN
 def get_product_review(data):   
@@ -53,20 +64,6 @@ def get_product_review(data):
     }
 
     return returnContent
-
-#Need to filter by date
-def get_review(data):    
-    review = db.reviews.find_one({"review_id": data["review_id"]})    
-    review.pop("_id")
-
-    product = db.products.find_one({"product_id": review["product_id"]})
-    review['dimensions'] = {
-        'width': product['imageDimensions']['width'],
-        'height': product['imageDimensions']['height'],
-        'downscale_factor': product['downscale_factor']
-    }
-
-    return review
 
 def get_product(data):    
     product = db.products.find_one({"product_id": data["product_id"]})    

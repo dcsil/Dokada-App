@@ -4,7 +4,7 @@ from flask_restful import Api, Resource, reqparse
 from flask_cors import CORS #comment this on deployment
 import sentry_sdk
 from sentry_sdk.integrations.flask import FlaskIntegration
-from api.imageManager import store_reviews, get_review, get_product, get_product_review
+from api.imageManager import store_reviews, get_product, get_product_review
 from datetime import datetime, timedelta, timezone
 from flask_jwt_extended import create_access_token,get_jwt,get_jwt_identity, \
                                unset_jwt_cookies, jwt_required, JWTManager
@@ -89,9 +89,7 @@ def trigger_error():
 def image_portal():
 
     print("Image api")
-    print(request)
     requestBody = request.get_json()
-    print(requestBody)
     
     if requestBody['option'] == 'store-review':
         print("Save image")

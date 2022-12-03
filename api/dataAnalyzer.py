@@ -1,31 +1,76 @@
+import numpy as np
+
+def aggregate_layer(layer, bitmaps):
+
+    weights = layer['weights']
+    imageData = layer['imageData']
+    # print(weights.keys())
+    # print(imageData.keys())
+    # print(bitmaps)
+    npImage = np.array(imageData["image"])
+
+    for weightType in weights:
+        productBitmap = bitmaps[weightType]
+        weightVal = weights[weightType]
+        # print(weightType, weightVal)
+        if weightVal:
+            weightedImage = npImage * weightVal
+            # print(np.sum(weightedImage))
+            if weightVal > 0:
+                productBitmap["positive"] = productBitmap["positive"] + weightedImage
+                productBitmap["posCount"] = productBitmap["posCount"] + npImage
+            elif weightVal < 0:
+                productBitmap["negative"] = productBitmap["negative"] + weightedImage
+                productBitmap["negCount"] = productBitmap["negCount"] + npImage
 
 #Mutate aggregates in product_data with the review data
 def aggregate_review(review, product_data):    
     #product_data = db.aggregates.find_one({"product_id": review["product_id"]})
     product_images = product_data["images"]
-    downscaled_dimensions = {"width": product_data["imageDimensions"]["width"]//product_data["downscale_factor"], "height": product_data["imageDimensions"]["height"]//product_data["downscale_factor"]}
-    
+
+    # Convert bitmaps in the product object to Numpy arrays
+    for weighting in product_images:
+        for bitmap in product_images[weighting]:
+            product_images[weighting][bitmap] = np.array(product_images[weighting][bitmap])
+
+    # Aggregate the info based on the layers in the review
     for layer in review["layers"]:
-        for weight_category in layer["weights"]:
-            weight = layer["weights"][weight_category]
-            """
-            aggr_images[weight_category] has two keys, "positive" and "negative", which stores
-            pixels that has positive or negative weights in each category
-            """ 
-            if(weight > 0):
-                aggregate_image(product_images[weight_category]["positive"], downscaled_dimensions, layer["imageData"]["image"], weight, layer["imageData"]["bbox"])
-            elif(weight < 0):
-                aggregate_image(product_images[weight_category]["negative"], downscaled_dimensions, layer["imageData"]["image"], weight, layer["imageData"]["bbox"])
+        if 'hasContent' in layer['imageData'] and layer['imageData']['hasContent'] is True:
+            aggregate_layer(layer, product_images)
+    
+    # Do update calculations that aren't done during aggregation
+    calculate_bias(product_images)
+
+    # Convert the Numpy arrays into the proper array
+    for weighting in product_images:
+        for bitmap in product_images[weighting]:
+            product_images[weighting][bitmap] = product_images[weighting][bitmap].tolist()
+            
+            # These logging and writing functions are really useful if you need to debug the contents of the layers
+            #print(weighting, bitmap, np.sum(product_images[weighting][bitmap]))
+            #np.savetxt(weighting + bitmap + 'data.csv', product_images[weighting][bitmap], delimiter='.')
     
 
-#Mutates the aggregate array to add the image array * img_weight in each entry only for the specified range in bbox
-def aggregate_image(aggr_array, dimensions, image_array, img_weight, bbox):            
-    for x_coord in range(bbox["xMin"], bbox["xMax"]+1):
-        for y_coord in range(bbox["yMin"], bbox["yMax"]+1):
-            img_x_coord = x_coord - bbox["xMin"]
-            img_y_coord = y_coord - bbox["yMin"]
-            image_width = bbox["xMax"] - bbox["xMin"] + 1           
-            image_index = img_y_coord*image_width + img_x_coord
-            aggregate_index = y_coord * dimensions["width"] + x_coord
-            print(f'x: {x_coord}, y: {y_coord}, index: {aggregate_index}, imgX: {img_x_coord}, imgY: {img_y_coord}, imgIndex: {image_index}')
-            aggr_array[aggregate_index] += img_weight*image_array[aggregate_index]
+def calculate_bias(bitmaps):
+
+    # f(|x|,|y|) = 1 - |x - y|/|x + y|
+    def get_bias(A, B):
+        x = np.abs(A)
+        y = np.abs(B)
+        numerator = np.abs(x - y)
+        denominator = np.abs(x + y)
+        return 1.0 - np.divide(numerator, denominator, out=np.zeros_like(numerator), where=denominator!=0, casting="unsafe")
+
+
+    for weightType in bitmaps:
+        weightMap = bitmaps[weightType]
+
+        # Weightless bias calculation
+        # inverseBias = get_bias(weightMap["posCount"], weightMap["negCount"])
+
+        # Weight considerate bias calculation, negative must be second argument
+        inverseBias = get_bias(weightMap["positive"], weightMap["negative"])
+
+        weightMap["bias"] = inverseBias
+    
+    return 0

@@ -128,7 +128,10 @@ const Canvas = (arg) => {
                 yMin: dsHeight,
                 xMax: -1,  
                 yMax: -1
-            }
+            },
+
+            // Has content
+            hasContent: true
         }
 
         const hMult = 4*imageData.width;
@@ -164,8 +167,11 @@ const Canvas = (arg) => {
                 yMin: 0,
                 xMax: 0,  
                 yMax: 0
-            }
+            };
+
+            dsImageData.hasContent = false;
         }
+        
         
         return dsImageData;
     }
@@ -225,25 +231,25 @@ const Canvas = (arg) => {
                 "downscale_factor": dsFactor
             },
             "reviews": [
-                {   
-                    "review_id": 26,
+                {
                     "layers": updatedLayers.map((layer) => ({
                             "imageData": {
                                 "image": layer.imageData.image,
-                                "bbox": layer.imageData.bbox
+                                "bbox": layer.imageData.bbox,
+                                "hasContent": layer.imageData.hasContent
                             },
                             "weights": {
-                                //Map [0, 100] to [-50, 50]
-                                'quality': layer.weights.quality - 50, 
-                                'style': layer.weights.style - 50, 
-                                'fit': layer.weights.fit - 50
+                                //Map [0, 100] to [-1.0, 1.0]
+                                'quality': (layer.weights.quality - 50.0)/50.0, 
+                                'style': (layer.weights.style - 50.0)/50.0, 
+                                'fit': (layer.weights.fit - 50.0)/50.0
                             }
                         })
                     )
                 }
             ]
         };
-        //console.log(saveData);
+        // console.log(saveData);
 
         // Send the data to database here
         sendToDatabase(saveData);
