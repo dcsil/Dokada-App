@@ -55,7 +55,7 @@ function Dashboard() {
           </FormControl>
         </div>
 
-        <div style={{padding:'10em'}}>
+        <div style={{padding:'6em'}}>
           {showView()}
         </div>
       </header>
