@@ -5,7 +5,6 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import CircularProgress from '@mui/material/CircularProgress';
-import Slider from '@mui/material/Slider';
 import ProgressBar from "@ramonak/react-progress-bar";
 
 import Container from 'react-bootstrap/Container';
