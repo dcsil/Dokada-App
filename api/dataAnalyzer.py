@@ -17,11 +17,12 @@ def aggregate_layer(layer, bitmaps):
             weightedImage = npImage * weightVal
             # print(np.sum(weightedImage))
             if weightVal > 0:
-                productBitmap["positive"] = productBitmap["positive"] + weightedImage
-                productBitmap["posCount"] = productBitmap["posCount"] + npImage
+                productBitmap["positive"]["map"] = productBitmap["positive"]["map"] + weightedImage
+                productBitmap["posCount"]["map"] = productBitmap["posCount"]["map"] + npImage
             elif weightVal < 0:
-                productBitmap["negative"] = productBitmap["negative"] + weightedImage
-                productBitmap["negCount"] = productBitmap["negCount"] + npImage
+                productBitmap["negative"]["map"] = productBitmap["negative"]["map"] + weightedImage
+                productBitmap["negCount"]["map"] = productBitmap["negCount"]["map"] + npImage
+
 
 #Mutate aggregates in product_data with the review data
 def aggregate_review(review, product_data):    
@@ -31,7 +32,7 @@ def aggregate_review(review, product_data):
     # Convert bitmaps in the product object to Numpy arrays
     for weighting in product_images:
         for bitmap in product_images[weighting]:
-            product_images[weighting][bitmap] = np.array(product_images[weighting][bitmap])
+            product_images[weighting][bitmap]["map"] = np.array(product_images[weighting][bitmap]["map"], dtype='f')
 
     # Aggregate the info based on the layers in the review
     for layer in review["layers"]:
@@ -40,15 +41,17 @@ def aggregate_review(review, product_data):
     
     # Do update calculations that aren't done during aggregation
     calculate_bias(product_images)
+    update_bounds(product_images)
 
     # Convert the Numpy arrays into the proper array
     for weighting in product_images:
         for bitmap in product_images[weighting]:
-            product_images[weighting][bitmap] = product_images[weighting][bitmap].tolist()
+            print(weighting, bitmap, np.sum(product_images[weighting][bitmap]["map"]))
+            product_images[weighting][bitmap]["map"] = product_images[weighting][bitmap]["map"].tolist()
             
             # These logging and writing functions are really useful if you need to debug the contents of the layers
             #print(weighting, bitmap, np.sum(product_images[weighting][bitmap]))
-            #np.savetxt(weighting + bitmap + 'data.csv', product_images[weighting][bitmap], delimiter='.')
+            #np.savetxt(weighting + bitmap + 'data.csv', product_images[weighting][bitmap]["map"], delimiter='.')
     
 
 def calculate_bias(bitmaps):
@@ -66,11 +69,33 @@ def calculate_bias(bitmaps):
         weightMap = bitmaps[weightType]
 
         # Weightless bias calculation
-        # inverseBias = get_bias(weightMap["posCount"], weightMap["negCount"])
+        # inverseBias = get_bias(weightMap["posCount"]["map"], weightMap["negCount"]["map"])
 
         # Weight considerate bias calculation, negative must be second argument
-        inverseBias = get_bias(weightMap["positive"], weightMap["negative"])
+        inverseBias = get_bias(weightMap["positive"]["map"], weightMap["negative"]["map"])
 
-        weightMap["bias"] = inverseBias
+        weightMap["bias"]["map"] = inverseBias
     
     return 0
+
+def update_bounds(bitmaps):
+
+    for weightType in bitmaps:
+        
+        mapInfo = bitmaps[weightType]["positive"]
+        mapInfo["max"] = max(mapInfo["max"], np.max(bitmaps[weightType]["positive"]["map"]))
+
+        mapInfo = bitmaps[weightType]["negative"]
+        mapInfo["min"] = min(mapInfo["min"], np.min(bitmaps[weightType]["negative"]["map"]))
+
+        # Not used
+        # mapInfo = bitmaps[weightType]["posCount"]
+        # mapInfo["max"] = max(mapInfo["max"], np.max(bitmaps[weightType]["posCount"]))
+
+        # Not used
+        # mapInfo = bitmaps[weightType]["negCount"]
+        # mapInfo["min"] = max(mapInfo["min"], np.min(bitmaps[weightType]["negCount"]))
+        
+        # Not used
+        # mapInfo = bitmaps[weightType]["bias"]
+        # mapInfo["max"] = max(mapInfo["max"], np.max(bitmaps[weightType]["bias"]))

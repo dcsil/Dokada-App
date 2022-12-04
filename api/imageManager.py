@@ -17,13 +17,70 @@ def store_reviews(data):
         product_info["reviews_count"] = 0
         product_info["images"] = {
             "quality": {
-                    "positive": zeroArr, "negative": zeroArr, "posCount": zeroArr, "negCount": zeroArr, "bias": zeroArr
+                    "positive": { 
+                        "map": zeroArr,
+                        "max": 0
+                        }, 
+                    "negative": {
+                        "map": zeroArr,
+                        "min": 0
+                        }, 
+                    "posCount": { 
+                        "map": zeroArr,
+                        "max": 0
+                        },
+                    "negCount": {
+                        "map": zeroArr,
+                        "min": 0
+                        },
+                    "bias": {
+                        "map": zeroArr,
+                        "max": 0
+                        }, 
                 }, 
             "fit": {
-                    "positive": zeroArr, "negative": zeroArr, "posCount": zeroArr, "negCount": zeroArr, "bias": zeroArr
+                    "positive": { 
+                        "map": zeroArr,
+                        "max": 0
+                        }, 
+                    "negative": {
+                        "map": zeroArr,
+                        "min": 0
+                        }, 
+                    "posCount": { 
+                        "map": zeroArr,
+                        "max": 0
+                        },
+                    "negCount": {
+                        "map": zeroArr,
+                        "min": 0
+                        },
+                    "bias": {
+                        "map": zeroArr,
+                        "max": 0
+                        }, 
                 }, 
             "style": {
-                    "positive": zeroArr, "negative": zeroArr, "posCount": zeroArr, "negCount": zeroArr, "bias": zeroArr
+                    "positive": { 
+                        "map": zeroArr,
+                        "max": 0
+                        }, 
+                    "negative": {
+                        "map": zeroArr,
+                        "min": 0
+                        }, 
+                    "posCount": { 
+                        "map": zeroArr,
+                        "max": 0
+                        },
+                    "negCount": {
+                        "map": zeroArr,
+                        "min": 0
+                        },
+                    "bias": {
+                        "map": zeroArr,
+                        "max": 0
+                        }, 
                 }, 
         }
 
@@ -41,7 +98,7 @@ def store_reviews(data):
         # Aggregate the information for the aggregate page
         aggregate_review(review, product)
         db.reviews.insert_one(review)
-
+        
     db.products.replace_one({"product_id": product["product_id"]}, product)
 
 #Not Being Called RN
@@ -64,7 +121,7 @@ def get_product_review(data):
     }
 
     return returnContent
-
+import numpy as np
 def get_product(data):    
     product = db.products.find_one({"product_id": data["product_id"]})    
     product.pop("_id")

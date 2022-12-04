@@ -30,7 +30,7 @@ const ProductHeatmap = (arg) => {
     ).then((response) => response.json())
     .then((data) => {
       console.log('Success in retrieving review');
-      console.log(data.content)
+      //console.log(data.content)
       setLayerData(data.content.reviews);
       setProductData(data.content.dimensions)
     })
@@ -130,7 +130,6 @@ const ProductHeatmap = (arg) => {
 
   const drawheatmap = () => {
     if (productReviews.length === 0 || currentReview !== previousReview) {
-      console.log('1');
       return (
         <div style={{margin:'auto'}}>        
           <CircularProgress size="8em"/>
@@ -138,7 +137,6 @@ const ProductHeatmap = (arg) => {
       )
     }
     else {
-      console.log('2')
       return (
         <Stage
           id="canvasStage"

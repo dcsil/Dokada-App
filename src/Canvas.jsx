@@ -287,7 +287,6 @@ const Canvas = (arg) => {
     }
 
     const renderStage = () => {
-        console.log(imgDimReady)
         /* 
             It's important to wait until the imageInfo is ready. When a state is updated and React
             checks their Virtual DOM, they check elements and components for things to update.
