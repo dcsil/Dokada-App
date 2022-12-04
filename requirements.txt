@@ -1,4 +1,4 @@
-﻿aniso8601==9.0.1
+aniso8601==9.0.1
 attrs==22.1.0
 blinker==1.5
 certifi==2022.9.24
@@ -16,6 +16,7 @@ iniconfig==1.1.1
 itsdangerous==2.1.2
 Jinja2==3.1.2
 MarkupSafe==2.1.1
+numpy==1.23.5
 packaging==21.3
 pluggy==1.0.0
 PyJWT==2.6.0

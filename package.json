@@ -20,6 +20,7 @@
     "axios": "^1.2.0",
     "bootstrap": "^5.2.2",
     "canvas": "^2.10.2",
+    "color-interpolate": "^1.0.5",
     "eslint-plugin-flowtype": "^8.0.3",
     "http-proxy-middleware": "^2.0.6",
     "konva": "^8.3.13",
