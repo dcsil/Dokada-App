@@ -1,8 +1,7 @@
 import './styles/CanvasPage.css';
 import React, { useState } from "react";
 import Canvas from "./Canvas";
-import Carousel_ from "./components/Carousel";
-import jacket from "./images/denim_jacket.png";
+import ProductCarousel from "./components/Carousel";
 // import tshirt from "./images/tshirt.png";
 // import pants from "./images/pants.png";
 // import shirt from "./images/pants2.png";
@@ -30,7 +29,7 @@ function CanvasPage() {
         <div>
           {/* Hard code the image url for the canvas for now*/}
           <div style={{ margin: 20, marginBottom: 50 }}>
-            <Carousel_ updateFunction={updateImageid} />
+            <ProductCarousel updateFunction={updateImageid} />
           </div>
           {imageInfo.imageReady ? <Canvas imageInfo={imageInfo} /> : <div />}
         </div>

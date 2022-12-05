@@ -7,9 +7,8 @@ import React, { useState } from "react";
 import "../styles/Carousel.css";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
 
-function Carousel_(args) {
+function ProductCarousel(args) {
   const [id, setId] = useState();
 
   function handleClick(event, argID) {
@@ -39,18 +38,16 @@ function Carousel_(args) {
           style={{ color: "black" }}
         >
           <Carousel.Item className="item">
-            <a>
-              <img
-                className="img-thumbnail"
-                id="one"
-                src={jacket}
-                alt="First slide"
-                style={{ width: 550 }}
-                onClick={(e) => {
-                  handleClick(e, 2);
-                }}
-              />
-            </a>
+            <img
+              className="img-thumbnail"
+              id="one"
+              src={jacket}
+              alt="First slide"
+              style={{ width: 550 }}
+              onClick={(e) => {
+                handleClick(e, 2);
+              }}
+            />
 
             <Carousel.Caption></Carousel.Caption>
           </Carousel.Item>
@@ -97,4 +94,4 @@ function Carousel_(args) {
   );
 }
 
-export default Carousel_;
+export default ProductCarousel;

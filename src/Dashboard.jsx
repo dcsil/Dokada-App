@@ -5,7 +5,6 @@ import React from 'react';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
-import carousel from "./components/Carousel";
 import Select from '@mui/material/Select';
 import jacket from './images/denim_jacket.png'
 // import tshirt from "./images/tshirt.png";
