@@ -109,7 +109,7 @@ def get_product_review(data):
         review.pop("_id")
         review_lst.append(review)
     
-    product = db.products.find_one({"product_id": review["product_id"]})
+    product = db.products.find_one({"product_id": data["product_id"]})
     
     returnContent = {
         'reviews': review_lst,
