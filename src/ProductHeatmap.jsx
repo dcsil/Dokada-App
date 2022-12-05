@@ -69,7 +69,7 @@ const ProductHeatmap = (arg) => {
       //console.log(reviewData.layers[0])
       for (let i = 0; i < layerCount; i++) {   
         console.log(reviewData.layers[i].imageData.image[indexTranslated]);    
-        if(reviewData.layers[i].imageData.image[indexTranslated] == 1){
+        if (reviewData.layers[i].imageData.image[indexTranslated] === 1) {
           qualityTotal += reviewData.layers[i].weights["quality"];
           styleTotal += reviewData.layers[i].weights["style"];
           fitTotal += reviewData.layers[i].weights["fit"];

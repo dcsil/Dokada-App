@@ -9,21 +9,8 @@ import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 
 function ProductCarousel(args) {
-  const [id, setId] = useState();
-
   function handleClick(event, argID) {
-    //   const { value, name } = event.target;
-    //   setloginForm((prevNote) => ({
-    //     ...prevNote,
-    //     [name]: value,
-    //   }));
     args.updateFunction(event.target.src, argID);
-
-    setId(event.target.id);
-    // console.log(event.target.id);
-    // console.log("printing setid");
-    // console.log(id);
-    console.log(event.target.src, argID);
   }
 
   return (
