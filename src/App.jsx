@@ -20,24 +20,24 @@ function App() {
   return (
     <BrowserRouter>
       <div className="App">
-        {!token && token !== "" && token !== undefined ? (
+        {/* {!token && token !== "" && token !== undefined ? (
           <Auth setToken={setToken} />
-        ) : (
-          <>
-            <Menu removeToken={removeToken} />
-            <Routes>
-              <Route
-                exact
-                path="/"
-                // element={<HomePage />}
-                element={<HomePage token={token} setToken={setToken} />}
-              />
-              <Route path="/canvas" element={<CanvasPage />} />
-              <Route path="/dashboard" element={<Dashboard />} />
-              {/* <Route path="/login" element={<Auth />} /> */}
-            </Routes>
-          </>
-        )}
+        ) : ( */}
+        <>
+          <Menu removeToken={removeToken} />
+          <Routes>
+            <Route
+              exact
+              path="/"
+              // element={<HomePage />}
+              element={<HomePage token={token} setToken={setToken} />}
+            />
+            <Route path="/canvas" element={<CanvasPage />} />
+            <Route path="/dashboard" element={<Dashboard />} />
+            {/* <Route path="/login" element={<Auth />} /> */}
+          </Routes>
+        </>
+        {/* )} */}
       </div>
     </BrowserRouter>
   );

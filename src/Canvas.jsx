@@ -213,32 +213,31 @@ const Canvas = (arg) => {
 
         // Hardcode metadata for saveData for now, but we need to get this dynamically later
         const saveData = {
-            "product_info": {
-                "product_id": 2,
-                "imageDimensions": {
-                    "width": Math.floor(imageInfo.width / dsFactor),
-                    "height": Math.floor(imageInfo.height / dsFactor)
-                },
-                "downscale_factor": dsFactor
+          product_info: {
+            product_id: arg.imageInfo.imageId,
+            imageDimensions: {
+              width: Math.floor(imageInfo.width / dsFactor),
+              height: Math.floor(imageInfo.height / dsFactor),
             },
-            "reviews": [
-                {   
-                    "review_id": 26,
-                    "layers": updatedLayers.map((layer) => ({
-                            "imageData": {
-                                "image": layer.imageData.image,
-                                "bbox": layer.imageData.bbox
-                            },
-                            "weights": {
-                                //Map [0, 100] to [-50, 50]
-                                'quality': layer.weights.quality - 50, 
-                                'style': layer.weights.style - 50, 
-                                'fit': layer.weights.fit - 50
-                            }
-                        })
-                    )
-                }
-            ]
+            downscale_factor: dsFactor,
+          },
+          reviews: [
+            {
+              review_id: 26,
+              layers: updatedLayers.map((layer) => ({
+                imageData: {
+                  image: layer.imageData.image,
+                  bbox: layer.imageData.bbox,
+                },
+                weights: {
+                  //Map [0, 100] to [-50, 50]
+                  quality: layer.weights.quality - 50,
+                  style: layer.weights.style - 50,
+                  fit: layer.weights.fit - 50,
+                },
+              })),
+            },
+          ],
         };
         //console.log(saveData);
 
@@ -286,67 +285,98 @@ const Canvas = (arg) => {
       }, []);
 
     return (
-        /*
+      /*
             Important to have this relative and img absolute. The img element will be absolute relative to its parent
         */
-        <div>
-            <div style={{position: 'relative', margin:'auto', padding:'10px', width: imageInfo.width, height:imageInfo.height}}>
-                <img id="imageUnderCanvas" style={{position: 'absolute', left: 0, top: 0, borderStyle: 'solid'}} onLoad={getImgDimensions} src={arg.imageUrl} alt={"Cannot retrieve" + arg.imageUrl}/>
-                <Stage
-                    id="canvasStage"
-                    style={{position: 'absolute', left: 0, top: 0}}
-                    width={imageInfo.width}
-                    height={imageInfo.height}
-                    onMouseDown={handleMouseDown}
-                    onMousemove={handleMouseMove}
-                    onMouseup={handleMouseUp}
-                >
-                    {layerRender()}
-                </Stage>
-            </div>
-            <div style={{display:"block"}}>
-                <select
-                    value={layerID}
-                    onChange={(e) => {
-                    setTool(e.target.value);
-                    }}
-                >
-                    <option value="0">red</option>
-                    <option value="1">green</option>
-                    <option value="2">blue</option>
-                    <option value="3">pink</option>
-                    <option value="4">eraser</option>
-                </select>
-
-                <select
-                    value={strokeSize}
-                    onChange={(e) => {
-                    setStrokeSize(e.target.value);
-                    }}
-                >
-                    <option value="15">15</option>
-                    <option value="30">30</option>
-                    <option value="45">45</option>
-                </select>
-                
-                <div style={{margin:'auto', width:'10%'}}>
-                    <Slider aria-label="Quality" size="small"
-                        value={layerData[layerID].weights.quality} onChange={(e) => {
-                            updateLayerWeight(e.target.value, 0);
-                    }} />
-                    <Slider aria-label="Style" size="small"
-                        value={layerData[layerID].weights.style} onChange={(e) => {
-                            updateLayerWeight(e.target.value, 1);
-                    }} />
-                    <Slider aria-label="Fit" size="small"
-                        value={layerData[layerID].weights.fit} onChange={(e) => {
-                            updateLayerWeight(e.target.value, 2);
-                    }} />
-                </div>
-
-                <input type="button" value="Save" onClick={saveImage}/>
-            </div>
+      <div>
+        <div
+          style={{
+            position: "relative",
+            margin: "auto",
+            padding: "10px",
+            width: imageInfo.width,
+            height: imageInfo.height,
+          }}
+        >
+          <img
+            id="imageUnderCanvas"
+            style={{
+              position: "absolute",
+              left: 0,
+              top: 0,
+              borderStyle: "solid",
+            }}
+            onLoad={getImgDimensions}
+            src={arg.imageInfo.imageUrl}
+            alt={"Cannot retrieve" + arg.imageInfo.imageUrl}
+          />
+          <Stage
+            id="canvasStage"
+            style={{ position: "absolute", left: 0, top: 0 }}
+            width={imageInfo.width}
+            height={imageInfo.height}
+            onMouseDown={handleMouseDown}
+            onMousemove={handleMouseMove}
+            onMouseup={handleMouseUp}
+          >
+            {layerRender()}
+          </Stage>
         </div>
+        <div style={{ display: "block" }}>
+          <select
+            value={layerID}
+            onChange={(e) => {
+              setTool(e.target.value);
+            }}
+          >
+            <option value="0">red</option>
+            <option value="1">green</option>
+            <option value="2">blue</option>
+            <option value="3">pink</option>
+            <option value="4">eraser</option>
+          </select>
+
+          <select
+            value={strokeSize}
+            onChange={(e) => {
+              setStrokeSize(e.target.value);
+            }}
+          >
+            <option value="15">15</option>
+            <option value="30">30</option>
+            <option value="45">45</option>
+          </select>
+
+          <div style={{ margin: "auto", width: "10%" }}>
+            <Slider
+              aria-label="Quality"
+              size="small"
+              value={layerData[layerID].weights.quality}
+              onChange={(e) => {
+                updateLayerWeight(e.target.value, 0);
+              }}
+            />
+            <Slider
+              aria-label="Style"
+              size="small"
+              value={layerData[layerID].weights.style}
+              onChange={(e) => {
+                updateLayerWeight(e.target.value, 1);
+              }}
+            />
+            <Slider
+              aria-label="Fit"
+              size="small"
+              value={layerData[layerID].weights.fit}
+              onChange={(e) => {
+                updateLayerWeight(e.target.value, 2);
+              }}
+            />
+          </div>
+
+          <input type="button" value="Save" onClick={saveImage} />
+        </div>
+      </div>
     );
 };
 
