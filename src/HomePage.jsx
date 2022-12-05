@@ -4,8 +4,9 @@ import "./styles/HomePage.css";
 import Button from "@mui/material/Button";
 import axios from "axios";
 
-function HomePage(props) {  
-  function getData() {
+function HomePage(props) {
+
+  React.useEffect(() => {
     axios({
       method: "GET",
       url: "/",
@@ -24,10 +25,7 @@ function HomePage(props) {
           console.log(error.response.headers);
         }
       });
-  }
-  React.useEffect(() => {
-    getData();
-  }, []);
+  }, [props]);
   return (
     <div style={{ textAlign: "center" }}>
       <br />
@@ -38,7 +36,6 @@ function HomePage(props) {
         color="secondary"
         style={{ width: 200 }}
         className="gradient-custom-2"
-        onClick={getData}
       >
         Canvas
       </Button>

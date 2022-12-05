@@ -58,8 +58,10 @@ function Dashboard() {
             </Select>
           </FormControl>
         </div>
-
-        <div style={{ padding: "10em" }}>{showView()}</div>
+        
+        <div style={{padding:'6em'}}>
+          {showView()}
+        </div>
       </header>
     </div>
   );
