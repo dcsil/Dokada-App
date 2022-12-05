@@ -340,7 +340,7 @@ const Canvas = (arg) => {
         */
         <div>
             <div style={{position: 'relative', margin:'auto', padding:'10px', width: imageInfo.width, height:imageInfo.height}}>
-                <img id="imageUnderCanvas" style={{position: 'absolute', left: 0, top: 0, borderStyle: 'solid'}} onLoad={getImgDimensions} src={arg.imageUrl} alt={"Cannot retrieve" + arg.imageUrl}/>
+                <img id="imageUnderCanvas" style={{position: 'absolute', left: 0, top: 0, borderStyle: 'solid'}} onLoad={getImgDimensions} src={arg.imageInfo.imageUrl} alt={"Cannot retrieve" + arg.imageInfo.imageUrl}/>
                 {renderStage()}
             </div>
             <div style={{display:"block"}}>

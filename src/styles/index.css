@@ -44,3 +44,33 @@ code {
       border-bottom-right-radius: .3rem;
     }
 }
+.carousel-inner {
+  width: 500px;
+}
+
+.carousel-inner>.item>img {
+  /* width: 330px;
+  height: 160px; */
+}
+
+.d-block {
+  /* width: 640px;
+  height: 360px; */
+  /* width: 100% !important;
+  display: none; */
+}
+
+.carousel-inner {
+  height: 550px;
+}
+
+.carousel-control-next-icon,
+.carousel-control-prev-icon {
+  width: 10em;
+  color: black;
+
+}
+
+.item {
+  height: 550px;
+}

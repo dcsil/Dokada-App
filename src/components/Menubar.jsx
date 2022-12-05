@@ -30,7 +30,7 @@ function Menu(props) {
           <Nav.Link href="features">Features</Nav.Link>
           <Nav.Link href="pricing">Pricing</Nav.Link>
           <Nav.Link href="/login">Login</Nav.Link>
-          <Nav.Link href="/canvas">Canvasss</Nav.Link>
+          <Nav.Link href="/canvas">Canvas</Nav.Link>
           <Nav.Link onClick={logMeOut} href="/Logout">
             Logout
           </Nav.Link>
