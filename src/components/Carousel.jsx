@@ -3,7 +3,6 @@ import jacket from "../images/denim_jacket.png";
 import tshirt from "../images/tshirt.png";
 import pants from "../images/pants.png";
 import shirt from "../images/pants2.png";
-import React, { useState } from "react";
 import "../styles/Carousel.css";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
