@@ -386,7 +386,6 @@ const Canvas = (arg) => {
                 <input type="button" value="Save" onClick={saveImage}/>
             </div>
         </div>
-      </div>
     );
 };
 
