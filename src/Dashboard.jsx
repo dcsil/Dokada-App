@@ -39,8 +39,7 @@ function Dashboard() {
   return (
     <div style={{ textAlign: "center" }}>
       <carousel />
-      <header style={{ backgroundColor: "#82C3FF10", minHeight: "100vh" }}>
-        <p>Dashboard goes here</p>
+      <header style={{ backgroundColor: "#82C3FF10", minHeight: "100vh" }}>        
 
         <div style={{ padding: "10px" }}>
           <FormControl fullWidth>

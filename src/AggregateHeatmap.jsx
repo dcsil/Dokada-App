@@ -2,6 +2,7 @@ import React from 'react';
 import interpolate from 'color-interpolate';
 import { Stage, Layer, Rect} from 'react-konva';
 import { FormLabel, FormControl, FormControlLabel, RadioGroup, Radio } from '@mui/material';
+import ProgressBar from "@ramonak/react-progress-bar";
 
 const AggregateHeatmap = (arg) => {
 
@@ -10,6 +11,7 @@ const AggregateHeatmap = (arg) => {
   // Select weight type and data sorting
   const [weightType, setWeightType] = React.useState(0);
   const [filterType, setFilterType] = React.useState(0);
+  const [categoryAvg, setAvg] = React.useState(0);
 
   const fetchReview = () => {
     const jsonData = {"product_id": 2};
@@ -41,7 +43,48 @@ const AggregateHeatmap = (arg) => {
   });
 
   const handleMouseDown = (e) => {
+
+    console.log(layerdata);
+
+    const currentpos = e.target.getStage().getPointerPosition();
+    const posX = Math.round(currentpos.x/layerdata.downscale_factor);
+    const posY = Math.round(currentpos.y/layerdata.downscale_factor);
+    const indexTranslated = layerdata.imageDimensions.width*posY + posX;   
+    console.log(indexTranslated);       
+
+    let weightMaps = {}
+    let filterMap = {}
+    switch(weightType) {
+      case 1:
+        weightMaps = layerdata.images.quality;
+        break;
+      case 2:
+        weightMaps = layerdata.images.style;
+        break;
+      case 3:
+        weightMaps = layerdata.images.fit;
+        break;
+      default:
+        console.log("Weight Type", weightType, "does not exist")
+        break;
+    }
+
+    switch(filterType) {
+      case 2:
+        filterMap = weightMaps.positive.map        
+        break;
+      case 3:
+        filterMap = weightMaps.negative.map        
+        break;
+      case 4:
+        filterMap = weightMaps.bias.map        
+        break;
+      default:
+        console.log("Filter Type", filterType, "does not exist")
+        return;
+    }
     
+    setAvg(filterMap[indexTranslated] / layerdata.reviews_count);
   };
 
   const handleMouseMove = (e) => {
@@ -177,6 +220,12 @@ const AggregateHeatmap = (arg) => {
             </RadioGroup>
           </FormControl>
         </div>
+
+        <div style={{position: 'relative', marginLeft: 'auto', marginRight:'auto', marginBottom: '15px', width: imageInfo.width}}>
+          <label>Average on Clicked Location:</label>            
+          <ProgressBar completed={Math.round(categoryAvg*100)} bgColor="#ff6666" />
+        </div>
+
         <div style={{position: 'relative', margin:'auto', padding:'10px', width: imageInfo.width, height:imageInfo.height}}>
             <img id="imageUnderCanvas" style={{position: 'absolute', left: 0, top: 0, borderStyle: 'solid'}} onLoad={getImgDimensions} src={arg.imageUrl} alt={"Cannot retrieve" + arg.imageUrl}/>
             <Stage
