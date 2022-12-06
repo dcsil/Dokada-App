@@ -34,9 +34,8 @@ jobs:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
     - run: npm ci
-    - run: npm run build --if-present
-    - run: npm install --save-dev nyc
-    - run: nyc npm test
-    - run: nyc report --reporter=lcov
+    - run: npm run build --if-present    
+    - run: ./node_modules/.bin/nyc npm test
+    - run: ./node_modules/.bin/nyc report --reporter=lcov
     - run: ./cc-test-reporter format-coverage -t lcov
     - run: ./cc-test-reporter upload-coverage --id $CC_TEST_REPORTER_ID
