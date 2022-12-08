@@ -32,7 +32,7 @@ jobs:
         cache: 'npm'
     - run: npm ci
     - run: npm run build --if-present    
-    - run: nyc npm test -- --coverage --watchAll=false
+    - run: ./node_modules/.bin/nyc npm test -- --coverage --watchAll=false
     - run: ./node_modules/.bin/nyc report --reporter=lcov
 
     - name: upload coverage
