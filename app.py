@@ -65,10 +65,14 @@ def create_token():
 
 
 @app.route('/register', methods=["POST"])
-def create_token():
-    username = request.json.get("username", None)
+
+def register():
+    email = request.json.get("email", None)
     password = request.json.get("password", None)
-    
+    if db.users.find_one({"email": email}) == None:
+        db.users.insert_one({"email": email, "password": password})
+    else:
+        db.users.replace_one({"email": email}, {"email": email, "password": password})
 
 
 @app.route("/logout", methods=["POST"])
