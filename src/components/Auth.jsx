@@ -29,7 +29,38 @@ function Auth(props) {
         props.setToken(response.data.access_token);
       })
       .catch((error) => {
-        setErrorMessage("WRONG EMAIL OR PASSWORD!");
+        // setErrorMessage("WRONG EMAIL OR PASSWORD!");
+        alert("wrong credentials! Try again");
+        if (error.response) {
+          console.log(error.response);
+          console.log(error.response.status);
+          console.log(error.response.headers);
+        }
+      });
+
+    setloginForm({
+      email: "",
+      password: "",
+    });
+
+    event.preventDefault();
+  }
+
+  function signMeUp(event) {
+    axios({
+      method: "POST",
+      url: "/register",
+      data: {
+        email: loginForm.email,
+        password: loginForm.password,
+      },
+    })
+      .then((response) => {
+        props.setToken(response.data.access_token);
+      })
+      .catch((error) => {
+        // setErrorMessage("WRONG EMAIL OR PASSWORD!");
+        alert("wrong credentials! Try again");
         if (error.response) {
           console.log(error.response);
           console.log(error.response.status);
@@ -90,7 +121,7 @@ function Auth(props) {
               placeholder="Password"
               value={loginForm.password}
             />
-            {errorMessage && <h3 style={{ color: "red" }}> {errorMessage} </h3>}
+            {/* {errorMessage && <h3 style={{ color: "red" }}> {errorMessage} </h3>} */}
             <div className="text-center pt-1 mb-5 pb-1">
               <MDBBtn
                 onClick={logMeIn}
@@ -99,15 +130,15 @@ function Auth(props) {
                 Sign in
               </MDBBtn>
 
-              <a className="text-muted" href="#!">
+              {/* <a className="text-muted" href="#!">
                 Forgot password?
-              </a>
+              </a> */}
             </div>
 
             <div className="d-flex flex-row align-items-center justify-content-center pb-4 mb-4">
               <p className="mb-0">Don't have an account?</p>
-              <MDBBtn outline className="mx-2" color="danger">
-                CREATE NEW
+              <MDBBtn outline className="mx-2" color="danger" onClick={signMeUp}>
+                SIGN UP
               </MDBBtn>
             </div>
           </div>

@@ -8,9 +8,10 @@ from api.imageManager import store_reviews, get_product, get_product_review
 from datetime import datetime, timedelta, timezone
 from flask_jwt_extended import create_access_token,get_jwt,get_jwt_identity, \
                                unset_jwt_cookies, jwt_required, JWTManager
+from api.db import getClient
 
 
-
+db = getClient()
 
 #from api.greet import greet
 sentry_sdk.init(
@@ -53,15 +54,21 @@ def refresh_expiring_jwts(response):
 
 @app.route('/token', methods=["POST"])
 def create_token():
-    print("hello hello")
     email = request.json.get("email", None)
     password = request.json.get("password", None)
     if email != "test" or password != "test":
         return {"msg": "Wrong email or password"}, 401
 
     access_token = create_access_token(identity=email)
-    response = {"access_token":access_token}
+    response = {"access_token": access_token}
     return response
+
+
+@app.route('/register', methods=["POST"])
+def create_token():
+    email = request.json.get("email", None)
+    password = request.json.get("password", None)
+    
 
 
 @app.route("/logout", methods=["POST"])
