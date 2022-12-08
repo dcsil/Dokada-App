@@ -10,9 +10,11 @@ import { useState } from "react";
 import axios from "axios";
 
 function Auth(props) {
+
+  const [signUp, setSignUp] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [loginForm, setloginForm] = useState({
-    email: "",
+    username: "",
     password: "",
   });
 
@@ -21,7 +23,7 @@ function Auth(props) {
       method: "POST",
       url: "/token",
       data: {
-        email: loginForm.email,
+        username: loginForm.username,
         password: loginForm.password,
       },
     })
@@ -29,7 +31,6 @@ function Auth(props) {
         props.setToken(response.data.access_token);
       })
       .catch((error) => {
-        // setErrorMessage("WRONG EMAIL OR PASSWORD!");
         alert("wrong credentials! Try again");
         if (error.response) {
           console.log(error.response);
@@ -39,7 +40,7 @@ function Auth(props) {
       });
 
     setloginForm({
-      email: "",
+      username: "",
       password: "",
     });
 
@@ -51,7 +52,7 @@ function Auth(props) {
       method: "POST",
       url: "/register",
       data: {
-        email: loginForm.email,
+        username: loginForm.username,
         password: loginForm.password,
       },
     })
@@ -59,7 +60,6 @@ function Auth(props) {
         props.setToken(response.data.access_token);
       })
       .catch((error) => {
-        // setErrorMessage("WRONG EMAIL OR PASSWORD!");
         alert("wrong credentials! Try again");
         if (error.response) {
           console.log(error.response);
@@ -69,7 +69,7 @@ function Auth(props) {
       });
 
     setloginForm({
-      email: "",
+      username: "",
       password: "",
     });
 
@@ -101,14 +101,14 @@ function Auth(props) {
 
             <MDBInput
               wrapperClass="mb-4"
-              label="Email address"
+              label="Username"
               id="form1"
               onChange={handleChange}
-              type="email"
-              text={loginForm.email}
-              name="email"
-              placeholder="Email"
-              value={loginForm.email}
+              type="username"
+              text={loginForm.username}
+              name="username"
+              placeholder="Username"
+              value={loginForm.username}
             />
             <MDBInput
               wrapperClass="mb-4"
@@ -137,7 +137,12 @@ function Auth(props) {
 
             <div className="d-flex flex-row align-items-center justify-content-center pb-4 mb-4">
               <p className="mb-0">Don't have an account?</p>
-              <MDBBtn outline className="mx-2" color="danger" onClick={signMeUp}>
+              <MDBBtn
+                outline
+                className="mx-2"
+                color="danger"
+                onClick={signMeUp}
+              >
                 SIGN UP
               </MDBBtn>
             </div>
