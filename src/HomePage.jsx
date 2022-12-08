@@ -6,8 +6,10 @@ import axios from "axios";
 
 function HomePage(props) {
 
+  console.log("lol")
   React.useEffect(() => {
-    axios({
+    console.log("useeffect")
+    fetch({
       method: "GET",
       url: "/",
       headers: {
@@ -15,6 +17,7 @@ function HomePage(props) {
       },
     })
       .then((response) => {
+        console.log(response)
         const res = response.data;
         res.access_token && props.setToken(res.access_token);
       })
