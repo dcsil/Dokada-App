@@ -4,19 +4,24 @@ import {
   MDBContainer,
   MDBRow,
   MDBCol,
+  MDBCheckbox,
   MDBInput,
+  MDBIcon,
+  MDBCard,
+  MDBCardBody,
 } from "mdb-react-ui-kit";
 import { useState } from "react";
 import axios from "axios";
+import { fontFamily } from "@mui/system";
 
 function Auth(props) {
-
   const [signUp, setSignUp] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [loginForm, setloginForm] = useState({
     username: "",
     password: "",
   });
+  console.log(signUp);
 
   function logMeIn(event) {
     axios({
@@ -57,10 +62,11 @@ function Auth(props) {
       },
     })
       .then((response) => {
-        props.setToken(response.data.access_token);
+        // props.setToken(response.data.access_token);
+        setSignUp(true);
       })
       .catch((error) => {
-        alert("wrong credentials! Try again");
+        alert("Registration Didn't go through");
         if (error.response) {
           console.log(error.response);
           console.log(error.response.status);
@@ -83,7 +89,7 @@ function Auth(props) {
       [name]: value,
     }));
   }
-  return (
+  return signUp ? (
     <MDBContainer className="my-5 gradient-form">
       <MDBRow>
         <MDBCol col="6" className="mb-5">
@@ -160,6 +166,68 @@ function Auth(props) {
               </p>
             </div>
           </div>
+        </MDBCol>
+      </MDBRow>
+    </MDBContainer>
+  ) : (
+    <MDBContainer fluid>
+      <MDBRow className="d-flex justify-content-center align-items-center h-100">
+        <MDBCol col="12">
+          <MDBCard
+            className="bg-white my-5 mx-auto"
+            style={{ borderRadius: "1rem", maxWidth: "500px" }}
+          >
+            <MDBCardBody className="p-5 w-100 d-flex flex-column">
+              <h2 className="fw-bold mb-2 text-center">Sign Up</h2>
+              <div className="text-center mb-2">
+                <img
+                  src={require("../images/Dokada.png")}
+                  style={{ width: "285px" }}
+                  alt="logo"
+                />
+
+                <h5
+                  className="fw-bold mb-2 text-center"
+                  style={{ margin: "20px" }}
+                >
+                  {" "}
+                  Please enter your register credentials!
+                </h5>
+              </div>
+
+              <MDBInput
+                wrapperClass="mb-3"
+                label="Username"
+                id="form1"
+                onChange={handleChange}
+                type="username"
+                text={loginForm.username}
+                name="username"
+                placeholder="Username"
+                value={loginForm.username}
+              />
+              <MDBInput
+                wrapperClass="mb-4"
+                label="Password"
+                id="form2"
+                onChange={handleChange}
+                type="password"
+                text={loginForm.password}
+                name="password"
+                placeholder="Password"
+                value={loginForm.password}
+              />
+              {/* {errorMessage && <h3 style={{ color: "red" }}> {errorMessage} </h3>} */}
+              <div className="text-center pt-1 mb-5 pb-1">
+                <MDBBtn
+                  onClick={signMeUp}
+                  className="mb-4 w-100 gradient-custom-2"
+                >
+                  Sign Up
+                </MDBBtn>
+              </div>
+            </MDBCardBody>
+          </MDBCard>
         </MDBCol>
       </MDBRow>
     </MDBContainer>
