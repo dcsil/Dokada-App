@@ -15,7 +15,7 @@ import axios from "axios";
 import { fontFamily } from "@mui/system";
 
 function Auth(props) {
-  const [signUp, setSignUp] = useState(false);
+  const [signUp, setSignUp] = useState(true);
   const [errorMessage, setErrorMessage] = useState("");
   const [loginForm, setloginForm] = useState({
     username: "",
