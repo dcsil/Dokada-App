@@ -14,13 +14,11 @@ function HomePage(props) {
       },
     })
       .then((response) => {
-        console.log("home success")
         const res = response.json();
         res.access_token && props.setToken(res.access_token);
       })
       .catch((error) => {
         console.log("Error:", error)
-        throw new Error("Fetch token failed")
       });
   }, [props]);
   return (
