@@ -8,9 +8,27 @@ import ProductHeatmap from '../ProductHeatmap';
 import AggregateHeatmap from '../AggregateHeatmap';
 import CanvasPage from '../CanvasPage';
 import Canvas from '../Canvas';
+import Menu from '../components/Menubar';
+import ProductCarousel from '../components/Carousel';
 import { act } from 'react-dom/test-utils';
 
 const getById = queryByAttribute.bind(null, 'id');
+
+describe.only("Product Carousel", () => {
+
+    test('Product Carousel Render', async() => {
+        render(<ProductCarousel updateFunction={(a, b)=>{return 0;}}/>);
+    })
+})
+
+describe.only("Menubar", () => {
+
+    test('Menubar Render', async() => {
+        render(<Menu removeToken= {()=>{return 0;}}/>);
+        
+        expect(screen.getByText(/login/i)).toBeInTheDocument()
+    })
+})
 
 describe("Canvas", () => {
 
