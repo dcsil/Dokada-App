@@ -301,6 +301,7 @@ const Canvas = (arg) => {
         if (imgDimReady) {
             return (
                 <Stage
+                    data-testid="canvas"
                     id="canvasStage"
                     style={{position: 'absolute', left: 0, top: 0}}
                     width={imageInfo.width}
@@ -343,7 +344,7 @@ const Canvas = (arg) => {
                 <img id="imageUnderCanvas" style={{position: 'absolute', left: 0, top: 0, borderStyle: 'solid'}} onLoad={getImgDimensions} src={arg.imageInfo.imageUrl} alt={"Cannot retrieve" + arg.imageInfo.imageUrl}/>
                 {renderStage()}
             </div>
-            <div style={{display:"block"}}>
+            <div style={{display:"block", margin: "50px 0 0 0"}}>
                 <select
                     value={layerID}
                     onChange={(e) => {
@@ -369,14 +370,23 @@ const Canvas = (arg) => {
                 </select>
                 
                 <div style={{margin:'auto', width:'10%'}}>
+                    <div>
+                        Quality    
+                    </div>
                     <Slider aria-label="Quality" size="small"
                         value={layerData[layerID].weights.quality} onChange={(e) => {
                             updateLayerWeight(e.target.value, 0);
                     }} />
+                    <div>
+                        Style    
+                    </div>
                     <Slider aria-label="Style" size="small"
                         value={layerData[layerID].weights.style} onChange={(e) => {
                             updateLayerWeight(e.target.value, 1);
                     }} />
+                    <div>
+                        Fit    
+                    </div>
                     <Slider aria-label="Fit" size="small"
                         value={layerData[layerID].weights.fit} onChange={(e) => {
                             updateLayerWeight(e.target.value, 2);

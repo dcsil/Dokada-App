@@ -58,6 +58,7 @@ def refresh_expiring_jwts(response):
 def create_token():
     username = request.json.get("username", None)
     password = request.json.get("password", None)
+
     
     existing_user = db.users.find_one({"username": username})
     if existing_user == None:
