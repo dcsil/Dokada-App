@@ -13,7 +13,7 @@ function HomePage(props) {
         Authorization: "Bearer " + props.token,
       },
     })
-      .then((response) => {c8a934b6
+      .then((response) => {
         const res = response.json();
         res.access_token && props.setToken(res.access_token);
       })
