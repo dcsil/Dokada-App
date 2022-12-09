@@ -156,9 +156,9 @@ def test_image_manager():
 
     try:
         store_reviews(store_data)
-        assert True
-    except:
         assert False
+    except:
+        assert True
 
     receive_data = {
         "product_id": 0
