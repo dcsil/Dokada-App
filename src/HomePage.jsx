@@ -2,12 +2,11 @@ import React from "react";
 import "./styles/HomePage.css";
 // import { Link } from 'react-router-dom';
 import Button from "@mui/material/Button";
-import axios from "axios";
 
 function HomePage(props) {
 
   React.useEffect(() => {
-    axios({
+    fetch({
       method: "GET",
       url: "/",
       headers: {
@@ -15,15 +14,13 @@ function HomePage(props) {
       },
     })
       .then((response) => {
-        const res = response.data;
+        console.log("home success")
+        const res = response.json();
         res.access_token && props.setToken(res.access_token);
       })
       .catch((error) => {
-        if (error.response) {
-          console.log(error.response);
-          console.log(error.response.status);
-          console.log(error.response.headers);
-        }
+        console.log("Error:", error)
+        throw new Error("Fetch token failed")
       });
   }, [props]);
   return (
