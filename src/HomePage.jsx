@@ -19,7 +19,6 @@ function HomePage(props) {
       })
       .catch((error) => {
         console.log("Error:", error)
-        throw new Error("Fetch token failed")
       });
   }, [props]);
   return (
