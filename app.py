@@ -9,6 +9,8 @@ from datetime import datetime, timedelta, timezone
 from flask_jwt_extended import create_access_token,get_jwt,get_jwt_identity, \
                                unset_jwt_cookies, jwt_required, JWTManager
 from api.db import getClient
+import hashlib
+import os
 
 
 db = getClient()
@@ -61,7 +63,9 @@ def create_token():
     if existing_user == None:
         return {"msg": "Wrong username or password"}, 401    
     else:
-        if existing_user["password"] != password:
+        newHash = hashlib.pbkdf2_hmac('sha256', password.encode(
+            'utf-8'), existing_user["salt"], 100000)            
+        if existing_user["hash"] != newHash:
             return {"msg": "Wrong username or password"}, 401
 
         access_token = create_access_token(identity=username)
@@ -73,10 +77,16 @@ def create_token():
 def register():
     print(request.json)
     username = request.json.get("username", None)
-    password = request.json.get("password", None)
+    password = request.json.get("password", None)    
+    
     if db.users.find_one({"username": username}) == None:
-        print({"username": username, "password": password})
-        db.users.insert_one(request.json)
+        print({"username": username, "password": password})        
+        
+        pwSalt = os.urandom(32)
+        pwHash = hashlib.pbkdf2_hmac(
+            'sha256', password.encode('utf-8'), pwSalt, 100000)
+        
+        db.users.insert_one({"username": username, "salt": pwSalt, "hash": pwHash})
         return {"status": "success"}
     else:        
         return {"status": "fail"}
