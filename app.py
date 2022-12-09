@@ -56,24 +56,30 @@ def refresh_expiring_jwts(response):
 def create_token():
     username = request.json.get("username", None)
     password = request.json.get("password", None)
-    if username != "test" or password != "test":
-        return {"msg": "Wrong username or password"}, 401
+    
+    existing_user = db.users.find_one({"username": username})
+    if existing_user == None:
+        return {"msg": "Wrong username or password"}, 401    
+    else:
+        if existing_user["password"] != password:
+            return {"msg": "Wrong username or password"}, 401
 
-    access_token = create_access_token(identity=username)
-    response = {"access_token": access_token}
-    return response
+        access_token = create_access_token(identity=username)
+        response = {"access_token": access_token}
+        return response
 
 
 @app.route('/register', methods=["POST"])
-
 def register():
-    email = request.json.get("email", None)
+    print(request.json)
+    username = request.json.get("username", None)
     password = request.json.get("password", None)
-    if db.users.find_one({"email": email}) == None:
-        db.users.insert_one({"email": email, "password": password})
-    else:
-        db.users.replace_one({"email": email}, {"email": email, "password": password})
-
+    if db.users.find_one({"username": username}) == None:
+        print({"username": username, "password": password})
+        db.users.insert_one(request.json)
+        return {"status": "success"}
+    else:        
+        return {"status": "fail"}
 
 @app.route("/logout", methods=["POST"])
 def logout():

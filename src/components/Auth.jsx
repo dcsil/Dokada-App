@@ -21,7 +21,27 @@ function Auth(props) {
     username: "",
     password: "",
   });
+  const [greetingText, setGreeting] = useState("Please login to your account")
+  const [reminderText, setReminder] = useState("Don't have an account?")
+  const [bigButtonLabel, setBigLabel] = useState("Sign In")
+  const [smallButtonLabel, setSmallLable] = useState("Sign Up")
+
   console.log(signUp);
+
+  function switchLable(){
+    if(bigButtonLabel == "Sign In"){
+      setGreeting("Please Sign up for a new account")
+      setReminder("Already have an account?")
+      setBigLabel("Sign Up")
+      setSmallLable("Sign In")
+    }
+    else{
+      setGreeting("Please login to your account")
+      setReminder("Don't have an account?")
+      setBigLabel("Sign In")
+      setSmallLable("Sign Up")
+    }
+  }
 
   function logMeIn(event) {
     axios({
@@ -62,11 +82,14 @@ function Auth(props) {
       },
     })
       .then((response) => {
-        // props.setToken(response.data.access_token);
-        setSignUp(true);
+        // props.setToken(response.data.access_token);        
+        console.log(response.data)
+        if(response.data["status"] == "fail"){
+          alert("User already exist");
+        }
+        setSignUp(false);
       })
-      .catch((error) => {
-        alert("Registration Didn't go through");
+      .catch((error) => {        
         if (error.response) {
           console.log(error.response);
           console.log(error.response.status);
@@ -103,7 +126,7 @@ function Auth(props) {
               <h1 className="mt-1 mb-5 pb-1 ">We are DOKADA</h1>
             </div>
 
-            <p>Please login to your account</p>
+            <p>{greetingText}</p>
 
             <MDBInput
               wrapperClass="mb-4"
@@ -133,7 +156,7 @@ function Auth(props) {
                 onClick={logMeIn}
                 className="mb-4 w-100 gradient-custom-2"
               >
-                Sign in
+                {bigButtonLabel}
               </MDBBtn>
 
               {/* <a className="text-muted" href="#!">
@@ -142,14 +165,14 @@ function Auth(props) {
             </div>
 
             <div className="d-flex flex-row align-items-center justify-content-center pb-4 mb-4">
-              <p className="mb-0">Don't have an account?</p>
+              <p className="mb-0">{reminderText}</p>
               <MDBBtn
                 outline
                 className="mx-2"
                 color="danger"
-                onClick={signMeUp}
+                onClick={() => {setSignUp(false)}}
               >
-                SIGN UP
+                {smallButtonLabel}
               </MDBBtn>
             </div>
           </div>
@@ -224,6 +247,17 @@ function Auth(props) {
                   className="mb-4 w-100 gradient-custom-2"
                 >
                   Sign Up
+                </MDBBtn>
+              </div>
+              <div className="d-flex flex-row align-items-center justify-content-center pb-4 mb-4">
+                <p className="mb-0">Already Have an Account</p>
+                <MDBBtn
+                  outline
+                  className="mx-2"
+                  color="danger"
+                  onClick={() => {setSignUp(true)}}
+                >
+                  Sign In
                 </MDBBtn>
               </div>
             </MDBCardBody>
