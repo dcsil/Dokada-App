@@ -1,25 +1,28 @@
 {
   "files": {
-    "main.css": "/static/css/main.00c70c3d.css",
-    "main.js": "/static/js/main.e6740186.js",
+    "main.css": "/static/css/main.5a843980.css",
+    "main.js": "/static/js/main.49332ccc.js",
     "static/js/787.19965a43.chunk.js": "/static/js/787.19965a43.chunk.js",
     "static/media/fa-solid-900.ttf": "/static/media/fa-solid-900.b1a653db79258eeccc5d.ttf",
+    "static/media/tshirt.png": "/static/media/tshirt.a664eb7cec56a8d9c5f6.png",
     "static/media/fa-brands-400.ttf": "/static/media/fa-brands-400.450a5c898f0b184b968b.ttf",
     "static/media/fa-solid-900.woff2": "/static/media/fa-solid-900.41c0f706d8ce93933771.woff2",
     "static/media/denim_jacket.png": "/static/media/denim_jacket.ac7ee27cc4be1b632362.png",
+    "static/media/pants.png": "/static/media/pants.9303e92af1a38cddf5fd.png",
     "static/media/fa-brands-400.woff2": "/static/media/fa-brands-400.3ac6859b28be946745f9.woff2",
+    "static/media/pants2.png": "/static/media/pants2.c66aa105bcad5d90400e.png",
     "static/media/Dokada.png": "/static/media/Dokada.4812637d91d5abb328e4.png",
     "static/media/fa-regular-400.ttf": "/static/media/fa-regular-400.3cd9fb8fcec4ad0f99d4.ttf",
     "static/media/fa-regular-400.woff2": "/static/media/fa-regular-400.1f3772178d9e5bed38a6.woff2",
     "static/media/fa-v4compatibility.ttf": "/static/media/fa-v4compatibility.e314b618134d5be20996.ttf",
     "static/media/fa-v4compatibility.woff2": "/static/media/fa-v4compatibility.4ee7f902d88f819e251c.woff2",
     "index.html": "/index.html",
-    "main.00c70c3d.css.map": "/static/css/main.00c70c3d.css.map",
-    "main.e6740186.js.map": "/static/js/main.e6740186.js.map",
+    "main.5a843980.css.map": "/static/css/main.5a843980.css.map",
+    "main.49332ccc.js.map": "/static/js/main.49332ccc.js.map",
     "787.19965a43.chunk.js.map": "/static/js/787.19965a43.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.00c70c3d.css",
-    "static/js/main.e6740186.js"
+    "static/css/main.5a843980.css",
+    "static/js/main.49332ccc.js"
   ]
 }
