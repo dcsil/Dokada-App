@@ -213,7 +213,7 @@ const AggregateHeatmap = (arg) => {
               onChange={(e) => {setFilterType(+e.target.value)}}
               row
             >
-              <FormControlLabel value={1} control={<Radio />} label="Overall" />
+              {/*<FormControlLabel value={1} control={<Radio />} label="Overall" />*/}
               <FormControlLabel value={2} control={<Radio />} label="Positive" />
               <FormControlLabel value={3} control={<Radio />} label="Negative" />
               <FormControlLabel value={4} control={<Radio />} label="Bias" />

@@ -7,6 +7,7 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import jacket from './images/denim_jacket.png'
+import ProductCarousel from './components/Carousel';
 // import tshirt from "./images/tshirt.png";
 // import pants from "./images/pants.png";
 // import shirt from "./images/shirt.png";
@@ -38,10 +39,8 @@ function Dashboard() {
 
   return (
     <div style={{ textAlign: "center" }}>
-      <carousel />
+      <ProductCarousel />
       <header style={{ backgroundColor: "#82C3FF10", minHeight: "100vh" }}>
-        <p>Dashboard goes here</p>
-
         <div style={{ padding: "10px" }}>
           <FormControl fullWidth>
             <InputLabel id="view-select-label">View</InputLabel>

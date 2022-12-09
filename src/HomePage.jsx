@@ -6,7 +6,7 @@ import Button from "@mui/material/Button";
 function HomePage(props) {
 
   React.useEffect(() => {
-    axios({
+    fetch({
       method: "GET",
       url: "/",
       headers: {
@@ -14,7 +14,7 @@ function HomePage(props) {
       },
     })
       .then((response) => {
-        const res = response.data;
+        const res = response.json();
         res.access_token && props.setToken(res.access_token);
       })
       .catch((error) => {

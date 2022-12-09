@@ -15,74 +15,7 @@ def store_reviews(data):
         
         zeroArr = [0]*product_info["imageDimensions"]["width"]*product_info["imageDimensions"]["height"]
         product_info["reviews_count"] = 0
-        product_info["images"] = {
-            "quality": {
-                    "positive": { 
-                        "map": zeroArr,
-                        "max": 0
-                        }, 
-                    "negative": {
-                        "map": zeroArr,
-                        "min": 0
-                        }, 
-                    "posCount": { 
-                        "map": zeroArr,
-                        "max": 0
-                        },
-                    "negCount": {
-                        "map": zeroArr,
-                        "min": 0
-                        },
-                    "bias": {
-                        "map": zeroArr,
-                        "max": 0
-                        }, 
-                }, 
-            "fit": {
-                    "positive": { 
-                        "map": zeroArr,
-                        "max": 0
-                        }, 
-                    "negative": {
-                        "map": zeroArr,
-                        "min": 0
-                        }, 
-                    "posCount": { 
-                        "map": zeroArr,
-                        "max": 0
-                        },
-                    "negCount": {
-                        "map": zeroArr,
-                        "min": 0
-                        },
-                    "bias": {
-                        "map": zeroArr,
-                        "max": 0
-                        }, 
-                }, 
-            "style": {
-                    "positive": { 
-                        "map": zeroArr,
-                        "max": 0
-                        }, 
-                    "negative": {
-                        "map": zeroArr,
-                        "min": 0
-                        }, 
-                    "posCount": { 
-                        "map": zeroArr,
-                        "max": 0
-                        },
-                    "negCount": {
-                        "map": zeroArr,
-                        "min": 0
-                        },
-                    "bias": {
-                        "map": zeroArr,
-                        "max": 0
-                        }, 
-                }, 
-        }
+        product_info["images"] = { "quality": { "positive": { "map": zeroArr, "max": 0 }, "negative": { "map": zeroArr, "min": 0 }, "posCount": { "map": zeroArr, "max": 0 }, "negCount": { "map": zeroArr, "min": 0 }, "bias": { "map": zeroArr, "max": 0 }, }, "fit": { "positive": { "map": zeroArr, "max": 0 }, "negative": { "map": zeroArr, "min": 0 }, "posCount": { "map": zeroArr, "max": 0 }, "negCount": { "map": zeroArr, "min": 0 }, "bias": { "map": zeroArr, "max": 0 }, }, "style": { "positive": { "map": zeroArr, "max": 0 }, "negative": { "map": zeroArr, "min": 0 }, "posCount": { "map": zeroArr, "max": 0 }, "negCount": { "map": zeroArr, "min": 0 }, "bias": { "map": zeroArr, "max": 0 }, }, }
 
         db.products.insert_one(product_info)
 
@@ -111,14 +44,7 @@ def get_product_review(data):
     
     product = db.products.find_one({"product_id": data["product_id"]})
     
-    returnContent = {
-        'reviews': review_lst,
-        'dimensions': {
-            'width': product['imageDimensions']['width'],
-            'height': product['imageDimensions']['height'],
-            'downscale_factor': product['downscale_factor']
-        }
-    }
+    returnContent = { 'reviews': review_lst, 'dimensions': { 'width': product['imageDimensions']['width'], 'height': product['imageDimensions']['height'], 'downscale_factor': product['downscale_factor'] } }
 
     return returnContent
 import numpy as np
@@ -126,11 +52,4 @@ def get_product(data):
     product = db.products.find_one({"product_id": data["product_id"]})    
     product.pop("_id")
     return product
-
-
-# initialize the accumulative data for a new product, check documentation for data format
-def init_acc_data(product_id, width, height):
-    data_dic = {}    
-    data_dic["reviews_count"] = 0
-    data_dic["images"] = {"quality": {"positive": [0]*width*height, "negative": [0]*width*height}, "fit": {"positive": [0]*width*height, "negative": [0]*width*height}, "style": {"positive": [0]*width*height, "negative": [0]*width*height}}
-    return data_dic
+    

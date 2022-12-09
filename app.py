@@ -129,18 +129,6 @@ def product_portal():
         }
         return response, 200
 
-
-"""
-@app.route("/", defaults={'path':''})
-def serve(path):
-    return send_from_directory(app.static_folder,'index.html')
-    
-
-@app.route("/canvas", defaults={'path':''})
-def serve_canvas(path):
-    return send_from_directory(app.static_folder,'index.html')
-"""
-
 #api.add_resource(greet, '/greeting')
 def get_app():
     return app
