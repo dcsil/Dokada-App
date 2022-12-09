@@ -61,7 +61,8 @@
     ]
   },
   "devDependencies": {
-    "jest": "^27.5.1"
+    "jest": "^27.5.1",
+    "nyc": "^15.1.0"
   },
   "optionalDependencies": {
     "fsevents": "^2.3.2"

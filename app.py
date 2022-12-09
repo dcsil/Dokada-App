@@ -8,9 +8,12 @@ from api.imageManager import store_reviews, get_product, get_product_review
 from datetime import datetime, timedelta, timezone
 from flask_jwt_extended import create_access_token,get_jwt,get_jwt_identity, \
                                unset_jwt_cookies, jwt_required, JWTManager
+from api.db import getClient
+import hashlib
+import os
 
 
-
+db = getClient()
 
 #from api.greet import greet
 sentry_sdk.init(
@@ -53,16 +56,41 @@ def refresh_expiring_jwts(response):
 
 @app.route('/token', methods=["POST"])
 def create_token():
-    print("hello hello")
-    email = request.json.get("email", None)
+    username = request.json.get("username", None)
     password = request.json.get("password", None)
-    if email != "martinchakchak@yahoo.ca" or password != "test123":
-        return {"msg": "Wrong email or password"}, 401
 
-    access_token = create_access_token(identity=email)
-    response = {"access_token":access_token}
-    return response
+    
+    existing_user = db.users.find_one({"username": username})
+    if existing_user == None:
+        return {"msg": "Wrong username or password"}, 401    
+    else:
+        newHash = hashlib.pbkdf2_hmac('sha256', password.encode(
+            'utf-8'), existing_user["salt"], 100000)            
+        if existing_user["hash"] != newHash:
+            return {"msg": "Wrong username or password"}, 401
 
+        access_token = create_access_token(identity=username)
+        response = {"access_token": access_token}
+        return response
+
+
+@app.route('/register', methods=["POST"])
+def register():
+    print(request.json)
+    username = request.json.get("username", None)
+    password = request.json.get("password", None)    
+    
+    if db.users.find_one({"username": username}) == None:
+        print({"username": username, "password": password})        
+        
+        pwSalt = os.urandom(32)
+        pwHash = hashlib.pbkdf2_hmac(
+            'sha256', password.encode('utf-8'), pwSalt, 100000)
+        
+        db.users.insert_one({"username": username, "salt": pwSalt, "hash": pwHash})
+        return {"status": "success"}
+    else:        
+        return {"status": "fail"}
 
 @app.route("/logout", methods=["POST"])
 def logout():
